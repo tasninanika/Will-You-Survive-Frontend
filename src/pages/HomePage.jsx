@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function HomePage() {
+const HomePage = () => {
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
       {/* Background GIF / Video */}
@@ -48,4 +48,6 @@ export default function HomePage() {
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;
