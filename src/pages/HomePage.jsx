@@ -240,6 +240,30 @@ const HomePage = () => {
             </div>
           </motion.div>
         )}
+        {!showIntro && currentStep === 1 && (
+          <FormStep1
+            onNext={(name, image) => {
+              setFormData({ ...formData, name, image });
+              setCurrentStep(2);
+            }}
+          />
+        )}
+
+        {currentStep === 2 && (
+          <FormStep2
+            onNext={(modelInput) => {
+              setFormData({ ...formData, modelInput });
+              setResult(
+                `Hello ${formData.name}, your prediction is ${
+                  modelInput.length * 42
+                }`
+              );
+              setCurrentStep(3);
+            }}
+          />
+        )}
+
+        {currentStep === 3 && <ResultCard result={result} />}
       </div>
 
       {/* Center helper pulse */}
