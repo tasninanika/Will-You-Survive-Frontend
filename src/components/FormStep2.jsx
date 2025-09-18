@@ -21,7 +21,14 @@ const FormStep2 = ({ onNext }) => {
   const handleNext = () => {
     if (step === 1) {
       if (!form.pclass || !form.sex || !form.age || !form.sibsp) {
-        toast.error("Please fill all fields in this step");
+        toast.error("Please fill all fields in this step", {
+          style: {
+            background: "#1e1e2e",
+            color: "#fff",
+            border: "1px solid #f472b6",
+            borderRadius: "8px",
+          },
+        });
         return;
       }
       setStep(2);
