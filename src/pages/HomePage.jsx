@@ -5,6 +5,9 @@ import Ocean from "../assets/ship.mp4";
 import Audio from "../assets/titanic-theme.mp3";
 import Robot from "../assets/robot.json";
 import { useEffect, useState } from "react";
+import FormStep1 from "../components/FormStep1";
+import FormStep2 from "../components/FormStep2";
+import ResultCard from "../components/ResultCard";
 
 // Popup animation variant
 const bubbleVariants = (delay) => ({
