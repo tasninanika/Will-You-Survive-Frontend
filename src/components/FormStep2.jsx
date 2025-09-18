@@ -34,7 +34,14 @@ const FormStep2 = ({ onNext }) => {
       setStep(2);
     } else {
       if (!form.parch || !form.fare || !form.embarked) {
-        toast.error("Please fill all fields in this step");
+        toast.error("Please fill all fields in this step", {
+          style: {
+            background: "#1e1e2e",
+            color: "#fff",
+            border: "1px solid #f472b6",
+            borderRadius: "8px",
+          },
+        });
         return;
       }
       const formattedForm = {
