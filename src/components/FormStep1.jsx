@@ -9,7 +9,7 @@ const FormStep1 = ({ onNext }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); // Save as data URL
+        setImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
