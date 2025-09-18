@@ -57,6 +57,15 @@ const HomePage = () => {
   const [bubble3Visible, setBubble3Visible] = useState(false);
   const [bubble4Visible, setBubble4Visible] = useState(false);
 
+  const [showIntro, setShowIntro] = useState(true);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState({
+    name: "",
+    image: null,
+    modelInput: "",
+  });
+  const [result, setResult] = useState(null);
+
   useEffect(() => {
     setBubble1Visible(true);
   }, []);
