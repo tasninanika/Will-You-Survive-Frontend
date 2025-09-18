@@ -6,6 +6,7 @@ import Audio from "../assets/titanic-theme.mp3";
 import CartoonRight from "../assets/cartoon-right.json";
 import CartoonLeft from "../assets/cartoon-right.json";
 import CartoonBottom from "../assets/cartoon-right.json";
+import Robot from "../assets/robot.json";
 import { useEffect, useState } from "react";
 
 // Popup animation variant
@@ -19,13 +20,13 @@ const bubbleVariants = (delay) => ({
   },
 });
 
-// // Floating animation for cartoon
-// const floatVariants = {
-//   float: {
-//     y: [0, -10, 0],
-//     transition: { repeat: Infinity, duration: 2, ease: "easeInOut" },
-//   },
-// };
+// Floating animation for cartoon
+const floatVariants = {
+  float: {
+    y: [0, -10, 0],
+    transition: { repeat: Infinity, duration: 2, ease: "easeInOut" },
+  },
+};
 
 // Typing effect component
 const TypingText = ({ text, speed = 50, onComplete }) => {
@@ -47,7 +48,7 @@ const TypingText = ({ text, speed = 50, onComplete }) => {
     return () => clearInterval(interval);
   }, [text, speed, onComplete, finished]);
 
-  return <p className="text-white/85 mt-2 text-sm font-mono">{displayed}</p>;
+  return <p className="text-white/85 mt-4 text-sm font-mono">{displayed}</p>;
 };
 
 const HomePage = () => {
@@ -129,23 +130,42 @@ const HomePage = () => {
         {/* Top Bubble */}
         {bubble1Visible && (
           <motion.div
-            className="absolute top-20 left-1/2 -translate-x-1/2 max-w-[360px]"
+            className="absolute top-20 left-1/2 -translate-x-1/2 max-w-[600px]"
             variants={bubbleVariants(0.2)}
             initial="hidden"
             animate="visible"
           >
-            <div className="relative p-6 bg-gradient-to-br from-purple-500/20 to-indigo-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white text-2xl font-bold">Hi Captain!</h2>
-              <TypingText
-                text="Ready for an Adventure? 🧭"
-                onComplete={() => setBubble2Visible(true)}
-              />
-              <div className="absolute -bottom-2 right-10 w-6 h-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-tl-full rotate-45" />
+            <div className="relative p-20 bg-gradient-to-br from-purple-500/20 to-indigo-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
+              {/* Robot animation centered above heading */}
+              <motion.div
+                className="absolute top-10 left-1/2 -translate-x-1/2 w-40"
+                variants={floatVariants}
+                animate="float"
+              >
+                <Lottie animationData={Robot} loop autoplay />
+              </motion.div>
+
+              <h2 className="text-white text-3xl md:text-5xl font-bold mt-12">
+                Hello, Captain!
+              </h2>
+              <TypingText text="Ready for an Adventure? 🧭" />
+              {/* YES Button */}
+              <motion.button
+                onClick={() => {
+                  setBubble1Visible(false);
+                  setTimeout(() => setBubble2Visible(true), 500);
+                }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="mt-4 px-6 py-2 rounded-full font-bold bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white shadow-lg"
+              >
+                Yes! I'm Ready
+              </motion.button>
             </div>
           </motion.div>
         )}
 
-        {/* Left Bubble */}
+        {/* Bubble 2 */}
         {bubble2Visible && (
           <motion.div
             className="absolute left-6 top-1/3 md:left-20 max-w-[360px]"
@@ -165,7 +185,6 @@ const HomePage = () => {
             </div>
           </motion.div>
         )}
-
         {/* Right Bubble */}
         {bubble3Visible && (
           <motion.div
@@ -186,7 +205,6 @@ const HomePage = () => {
             </div>
           </motion.div>
         )}
-
         {/* Bottom CTA Bubble */}
         {bubble4Visible && (
           <motion.div
