@@ -19,17 +19,49 @@ const bubbleVariants = (delay) => ({
   },
 });
 
-// Floating animation for cartoon
-const floatVariants = {
-  float: {
-    y: [0, -10, 0],
-    transition: { repeat: Infinity, duration: 2, ease: "easeInOut" },
-  },
+// // Floating animation for cartoon
+// const floatVariants = {
+//   float: {
+//     y: [0, -10, 0],
+//     transition: { repeat: Infinity, duration: 2, ease: "easeInOut" },
+//   },
+// };
+
+// Typing effect component
+const TypingText = ({ text, speed = 50, onComplete }) => {
+  const [displayed, setDisplayed] = useState("");
+  const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    if (finished) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        setFinished(true);
+        if (onComplete) onComplete();
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, speed, onComplete, finished]);
+
+  return <p className="text-white/85 mt-2 text-sm font-mono">{displayed}</p>;
 };
 
 const HomePage = () => {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+
+  const [bubble1Visible, setBubble1Visible] = useState(false);
+  const [bubble2Visible, setBubble2Visible] = useState(false);
+  const [bubble3Visible, setBubble3Visible] = useState(false);
+  const [bubble4Visible, setBubble4Visible] = useState(false);
+
+  useEffect(() => {
+    setBubble1Visible(true);
+  }, []);
 
   useEffect(() => {
     const audio = document.getElementById("bg-audio");
@@ -78,7 +110,7 @@ const HomePage = () => {
       </audio>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-indigo-900/30 to-black/70 backdrop-blur-xs" />
 
       {/* Title */}
       <div className="relative z-10 flex justify-center pt-16">
@@ -94,88 +126,91 @@ const HomePage = () => {
 
       {/* Dream Bubbles */}
       <div className="relative z-10 h-full w-full">
-        {/* Right Bubble */}
-        <motion.div
-          className="absolute right-6 top-28 md:right-20 md:top-32 max-w-[300px] md:max-w-[360px]"
-          variants={bubbleVariants(0.2)}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="relative p-6 bg-white/20 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl">
-            {/* Cartoon Man */}
-            <motion.div
-              className="absolute -bottom-16 right-4 w-16"
-              variants={floatVariants}
-              animate="float"
-            >
-              <Lottie animationData={CartoonRight} loop autoplay />
-            </motion.div>
-
-            <h2 className="text-white text-2xl md:text-3xl font-semibold">
-              Hi! <br />
-              How are you, Captain?
-            </h2>
-
-            {/* Bubble tail */}
-            <div className="absolute -bottom-3 right-10 w-6 h-6 bg-white/20 backdrop-blur-md border-b border-r border-white/30 rotate-45" />
-          </div>
-        </motion.div>
+        {/* Top Bubble */}
+        {bubble1Visible && (
+          <motion.div
+            className="absolute top-20 left-1/2 -translate-x-1/2 max-w-[360px]"
+            variants={bubbleVariants(0.2)}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="relative p-6 bg-gradient-to-br from-purple-500/20 to-indigo-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
+              <h2 className="text-white text-2xl font-bold">Hi Captain!</h2>
+              <TypingText
+                text="Ready for an Adventure? 🧭"
+                onComplete={() => setBubble2Visible(true)}
+              />
+              <div className="absolute -bottom-2 right-10 w-6 h-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-tl-full rotate-45" />
+            </div>
+          </motion.div>
+        )}
 
         {/* Left Bubble */}
-        <motion.div
-          className="absolute left-6 top-60 md:left-20 md:top-64 max-w-[320px] md:max-w-[420px]"
-          variants={bubbleVariants(0.6)}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="relative p-6 bg-white/15 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl">
-            <motion.div
-              className="absolute -bottom-24 left-3 w-20"
-              variants={floatVariants}
-              animate="float"
-            >
-              <Lottie animationData={CartoonLeft} loop autoplay />
-            </motion.div>
-
-            <h2 className="text-white text-xl md:text-2xl font-bold">
-              🧊 Will you survive if you were on the Titanic that day?
-            </h2>
-            <p className="text-white/80 text-sm mt-2">
-              Don’t let the penguins laugh at us!
-            </p>
-
-            <div className="absolute -bottom-3 left-10 w-6 h-6 bg-white/15 backdrop-blur-md border-l border-b border-white/30 rotate-45" />
-          </div>
-        </motion.div>
-
-        {/* Bottom-right CTA Bubble */}
-        <motion.div
-          className="absolute bottom-10 right-6 md:bottom-40 md:right-20 max-w-[340px]"
-          variants={bubbleVariants(1)}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="relative p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl text-center">
-            <h3 className="text-white text-xl font-bold">
-              🚤 All Aboard the Lifeboat!
-            </h3>
-            <p className="text-white/80 text-sm mt-2">
-              Think you can outsmart the iceberg? 😏
-            </p>
-            <div className="mt-4">
-              <Link
-                to="/player"
-                className="btn btn-primary w-full normal-case font-bold tracking-wide
-                           bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600
-                           hover:from-pink-400 hover:via-fuchsia-500 hover:to-purple-500
-                           text-white border-0 shadow-xl
-                           transition-transform duration-300 hover:scale-105 active:scale-95"
-              >
-                Start the Game 🎮
-              </Link>
+        {bubble2Visible && (
+          <motion.div
+            className="absolute left-6 top-1/3 md:left-20 max-w-[360px]"
+            variants={bubbleVariants(0.4)}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="relative p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
+              <h2 className="text-white text-lg font-bold">
+                🌊 Iceberg Ahead!
+              </h2>
+              <TypingText
+                text="Brace yourself captain, the night is dark... ❄️"
+                onComplete={() => setBubble3Visible(true)}
+              />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-blue-500/20 backdrop-blur-md rotate-45" />
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
+
+        {/* Right Bubble */}
+        {bubble3Visible && (
+          <motion.div
+            className="absolute right-6 top-1/2 md:right-20 max-w-[360px]"
+            variants={bubbleVariants(0.6)}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg">
+              <h2 className="text-white text-xl font-bold">
+                🧊 Will you survive if you were on the Titanic that day?
+              </h2>
+              <TypingText
+                text="Don’t let the penguins laugh at us... 🌌"
+                onComplete={() => setBubble4Visible(true)}
+              />
+              <div className="absolute -bottom-5 left-10 w-8 h-5 bg-gradient-to-br from-cyan-400/30 to-blue-500/20 rounded-tr-full rotate-45" />
+            </div>
+          </motion.div>
+        )}
+
+        {/* Bottom CTA Bubble */}
+        {bubble4Visible && (
+          <motion.div
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 max-w-[420px]"
+            variants={bubbleVariants(0.8)}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="relative p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
+              <h3 className="text-white text-xl font-bold">
+                🚤 All Aboard the Lifeboat!
+              </h3>
+              <TypingText text="Outsmart the iceberg and survive! 😏" />
+              <div className="mt-4">
+                <Link
+                  to="/player"
+                  className="btn btn-primary w-full font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300"
+                >
+                  Start the Game 🎮
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {/* Center helper pulse */}
