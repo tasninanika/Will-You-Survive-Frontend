@@ -231,6 +231,10 @@ const HomePage = () => {
               <div className="mt-4">
                 <Link
                   onClick={() => {
+                    setBubble1Visible(false);
+                    setBubble2Visible(false);
+                    setBubble3Visible(false);
+                    setBubble4Visible(false);
                     setShowIntro(false);
                     setCurrentStep(1);
                   }}
