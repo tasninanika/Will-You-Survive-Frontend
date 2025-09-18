@@ -93,7 +93,7 @@ const HomePage = () => {
     }
   };
   return (
-    <div className="relative h-dvh w-full overflow-hidden bg-black">
+    <div className="relative h-dvh w-full px-40 overflow-hidden bg-black">
       {/* Background video */}
       <video
         autoPlay
@@ -168,7 +168,7 @@ const HomePage = () => {
         {/* Bubble 2 */}
         {bubble2Visible && (
           <motion.div
-            className="absolute left-6 top-2/4 md:left-20 max-w-[360px]"
+            className="absolute left-6 top-40 md:left-20 max-w-[360px]"
             variants={bubbleVariants(0.4)}
             initial="hidden"
             animate="visible"
@@ -182,49 +182,49 @@ const HomePage = () => {
                 text="Brace yourself captain, the night is dark... ❄️"
                 onComplete={() => setBubble3Visible(true)}
               />
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-blue-500/20 backdrop-blur-md rotate-45" />
+              {/* <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-blue-500/20 backdrop-blur-md rotate-45" /> */}
             </div>
           </motion.div>
         )}
         {/* Right Bubble */}
         {bubble3Visible && (
           <motion.div
-            className="absolute right-6 top-1/2 md:right-20 max-w-[360px]"
+            className="absolute right-6 top-40 md:right-20 max-w-[360px]"
             variants={bubbleVariants(0.6)}
             initial="hidden"
             animate="visible"
           >
-            <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg">
+            <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
               <h2 className="text-white text-xl font-bold">
-                🧊 Will you survive if you were on the Titanic that day?
+                🧊 Are you brave enough to face the Titanic’s fate?
               </h2>
               <TypingText
-                text="Don’t let the penguins laugh at us... 🌌"
+                text="Don’t let the penguins laugh at you!... 🌌"
                 onComplete={() => setBubble4Visible(true)}
               />
-              <div className="absolute -bottom-5 left-10 w-8 h-5 bg-gradient-to-br from-cyan-400/30 to-blue-500/20 rounded-tr-full rotate-45" />
+              {/* <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-blue-500/20 backdrop-blur-md rotate-45" /> */}
             </div>
           </motion.div>
         )}
         {/* Bottom CTA Bubble */}
         {bubble4Visible && (
           <motion.div
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 max-w-[420px]"
+            className="absolute bottom-50 left-1/2 -translate-x-1/2 max-w-[360px]"
             variants={bubbleVariants(0.8)}
             initial="hidden"
             animate="visible"
           >
             <div className="relative p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
               <h3 className="text-white text-xl font-bold">
-                🚤 All Aboard the Lifeboat!
+                🚤 Survive first, panic later!
               </h3>
-              <TypingText text="Outsmart the iceberg and survive! 😏" />
+              <TypingText text="The iceberg won’t wait for anyone. 😏" />
               <div className="mt-4">
                 <Link
                   to="/player"
-                  className="btn btn-primary w-full font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300"
+                  className="btn btn-primary w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full"
                 >
-                  Start the Game 🎮
+                  Jump In! ⚓
                 </Link>
               </div>
             </div>
