@@ -6,6 +6,7 @@ import Audio from "../assets/titanic-theme.mp3";
 import CartoonRight from "../assets/cartoon-right.json";
 import CartoonLeft from "../assets/cartoon-right.json";
 import CartoonBottom from "../assets/cartoon-right.json";
+import { useEffect, useState } from "react";
 
 // Popup animation variant
 const bubbleVariants = (delay) => ({
@@ -27,6 +28,37 @@ const floatVariants = {
 };
 
 const HomePage = () => {
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const audio = document.getElementById("bg-audio");
+
+    const handleFirstInteraction = () => {
+      audio.muted = false;
+      audio
+        .play()
+        .then(() => {
+          setMusicPlaying(true);
+          setShowPopup(true);
+        })
+        .catch((err) => console.warn("Autoplay blocked:", err));
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+
+    window.addEventListener("click", handleFirstInteraction);
+    return () => window.removeEventListener("click", handleFirstInteraction);
+  }, []);
+
+  const toggleMusic = () => {
+    const audio = document.getElementById("bg-audio");
+    if (musicPlaying) {
+      audio.pause();
+      setMusicPlaying(false);
+    } else {
+      audio.play().then(() => setMusicPlaying(true));
+    }
+  };
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-black">
       {/* Background video */}
@@ -41,7 +73,7 @@ const HomePage = () => {
       </video>
 
       {/* Titanic theme audio */}
-      <audio autoPlay loop>
+      <audio id="bg-audio" autoPlay loop muted>
         <source src={Audio} type="audio/mp3" />
       </audio>
 
@@ -65,7 +97,7 @@ const HomePage = () => {
         {/* Right Bubble */}
         <motion.div
           className="absolute right-6 top-28 md:right-20 md:top-32 max-w-[300px] md:max-w-[360px]"
-          variants={bubbleVariants(1)}
+          variants={bubbleVariants(0.2)}
           initial="hidden"
           animate="visible"
         >
@@ -80,11 +112,9 @@ const HomePage = () => {
             </motion.div>
 
             <h2 className="text-white text-2xl md:text-3xl font-semibold">
-              ❓ What do you think?
+              Hi! <br />
+              How are you, Captain?
             </h2>
-            <p className="text-white/80 mt-2 text-sm">
-              Tilt your compass and take a guess, captain! 🧭
-            </p>
 
             {/* Bubble tail */}
             <div className="absolute -bottom-3 right-10 w-6 h-6 bg-white/20 backdrop-blur-md border-b border-r border-white/30 rotate-45" />
@@ -94,13 +124,13 @@ const HomePage = () => {
         {/* Left Bubble */}
         <motion.div
           className="absolute left-6 top-60 md:left-20 md:top-64 max-w-[320px] md:max-w-[420px]"
-          variants={bubbleVariants(3)}
+          variants={bubbleVariants(0.6)}
           initial="hidden"
           animate="visible"
         >
           <div className="relative p-6 bg-white/15 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl">
             <motion.div
-              className="absolute -bottom-16 left-4 w-16"
+              className="absolute -bottom-24 left-3 w-20"
               variants={floatVariants}
               animate="float"
             >
@@ -110,8 +140,8 @@ const HomePage = () => {
             <h2 className="text-white text-xl md:text-2xl font-bold">
               🧊 Will you survive if you were on the Titanic that day?
             </h2>
-            <p className="text-white/80 mt-2 text-sm">
-              Only the bravest sail through the iceberg night... 🌌
+            <p className="text-white/80 text-sm mt-2">
+              Don’t let the penguins laugh at us!
             </p>
 
             <div className="absolute -bottom-3 left-10 w-6 h-6 bg-white/15 backdrop-blur-md border-l border-b border-white/30 rotate-45" />
@@ -121,19 +151,11 @@ const HomePage = () => {
         {/* Bottom-right CTA Bubble */}
         <motion.div
           className="absolute bottom-10 right-6 md:bottom-40 md:right-20 max-w-[340px]"
-          variants={bubbleVariants(6)}
+          variants={bubbleVariants(1)}
           initial="hidden"
           animate="visible"
         >
           <div className="relative p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl text-center">
-            <motion.div
-              className="absolute -bottom-16 right-10 w-16"
-              variants={floatVariants}
-              animate="float"
-            >
-              <Lottie animationData={CartoonBottom} loop autoplay />
-            </motion.div>
-
             <h3 className="text-white text-xl font-bold">
               🚤 All Aboard the Lifeboat!
             </h3>
@@ -152,10 +174,40 @@ const HomePage = () => {
                 Start the Game 🎮
               </Link>
             </div>
-            <div className="absolute -bottom-3 right-14 w-6 h-6 bg-purple-500/30 backdrop-blur-md border-r border-b border-white/30 rotate-45" />
           </div>
         </motion.div>
       </div>
+
+      {/* Center helper pulse */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-0"
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: [0.15, 0.3, 0.15] }}
+        transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+      >
+        <div className="absolute left-1/2 top-[42%] -translate-x-1/2 w-64 h-64 rounded-full bg-cyan-500/10 blur-3xl" />
+      </motion.div>
+      {/* Music Toggle Pop-up */}
+      {showPopup && (
+        <motion.div
+          initial={{ x: -200, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -200, opacity: 0 }}
+          className="fixed bottom-6 left-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl shadow-lg flex items-center gap-3 px-4 py-2"
+        >
+          <button
+            onClick={toggleMusic}
+            className={`px-3 py-1 rounded-lg font-semibold transition-colors ${
+              musicPlaying
+                ? " bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 border-0 text-white"
+                : "bg-pink-500/70 hover:bg-pink-500/90 text-white"
+            }`}
+          >
+            {musicPlaying ? "🔊 On" : "🔇 Off"}
+          </button>
+          <span className="text-white text-sm">Titanic Theme</span>
+        </motion.div>
+      )}
 
       {/* Center helper pulse */}
       <motion.div
