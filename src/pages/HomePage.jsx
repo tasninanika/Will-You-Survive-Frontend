@@ -3,9 +3,6 @@ import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import Ocean from "../assets/ship.mp4";
 import Audio from "../assets/titanic-theme.mp3";
-import CartoonRight from "../assets/cartoon-right.json";
-import CartoonLeft from "../assets/cartoon-right.json";
-import CartoonBottom from "../assets/cartoon-right.json";
 import Robot from "../assets/robot.json";
 import { useEffect, useState } from "react";
 
