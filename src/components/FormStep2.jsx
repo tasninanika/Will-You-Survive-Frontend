@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const FormStep2 = ({ onNext }) => {
   const [step, setStep] = useState(1);
@@ -20,13 +21,13 @@ const FormStep2 = ({ onNext }) => {
   const handleNext = () => {
     if (step === 1) {
       if (!form.pclass || !form.sex || !form.age || !form.sibsp) {
-        alert("Please fill all fields in this step");
+        toast.error("Please fill all fields in this step");
         return;
       }
       setStep(2);
     } else {
       if (!form.parch || !form.fare || !form.embarked) {
-        alert("Please fill all fields in this step");
+        toast.error("Please fill all fields in this step");
         return;
       }
       const formattedForm = {
