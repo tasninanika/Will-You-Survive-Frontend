@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
+import toast from "react-hot-toast";
 import Ocean from "../assets/ship.mp4";
 import Audio from "../assets/titanic-theme.mp3";
 import Robot from "../assets/robot.json";
@@ -99,6 +100,28 @@ const HomePage = () => {
       setMusicPlaying(false);
     } else {
       audio.play().then(() => setMusicPlaying(true));
+    }
+  };
+  // API call
+  const handleSubmit = async (formStep2Data) => {
+    try {
+      const fullData = { ...formData, ...formStep2Data };
+      const res = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fullData),
+      });
+
+      if (!res.ok) throw new Error("Network error");
+
+      const data = await res.json();
+
+      setResult({ ...fullData, ...data });
+      setCurrentStep(3); // Show result
+      toast.success("Prediction completed!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Prediction failed! Try again.");
     }
   };
   return (
@@ -257,14 +280,8 @@ const HomePage = () => {
 
         {currentStep === 2 && (
           <FormStep2
-            onNext={(modelInput) => {
-              setFormData({ ...formData, modelInput });
-              setResult(
-                `Hello ${formData.name}, your prediction is ${
-                  modelInput.length * 42
-                }`
-              );
-              setCurrentStep(3);
+            onNext={(formStep2Data) => {
+              handleSubmit(formStep2Data);
             }}
           />
         )}
