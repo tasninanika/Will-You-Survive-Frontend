@@ -22,12 +22,14 @@ const FormStep1 = ({ onNext }) => {
         type="text"
         placeholder="Enter your name"
         value={name}
+        required
         onChange={(e) => setName(e.target.value)}
         className="w-full p-2 mb-4 rounded-lg text-black"
       />
       <input
         type="file"
         accept="image/*"
+        required
         onChange={handleImageChange}
         className="mb-4"
       />
