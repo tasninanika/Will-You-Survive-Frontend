@@ -6,7 +6,13 @@ const FormStep1 = ({ onNext }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) setImage(URL.createObjectURL(file));
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result); // Save as data URL
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
