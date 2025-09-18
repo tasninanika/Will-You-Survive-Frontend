@@ -227,6 +227,10 @@ const HomePage = () => {
               <TypingText text="The iceberg won’t wait for anyone. 😏" />
               <div className="mt-4">
                 <Link
+                  onClick={() => {
+                    setShowIntro(false);
+                    setCurrentStep(1);
+                  }}
                   to="/player"
                   className="btn btn-primary w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full"
                 >
