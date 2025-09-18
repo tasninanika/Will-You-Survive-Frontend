@@ -5,10 +5,31 @@ import toast from "react-hot-toast";
 import Ocean from "../assets/ship.mp4";
 import Audio from "../assets/titanic-theme.mp3";
 import Robot from "../assets/robot.json";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormStep1 from "../components/FormStep1";
 import FormStep2 from "../components/FormStep2";
 import ResultCard from "../components/ResultCard";
+
+// Error Boundary component
+class ErrorBoundary extends React.Component {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="text-red-500 text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg">
+          <h2>Something went wrong</h2>
+          <p>{this.state.error?.message || "An error occurred"}</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 // Popup animation variant
 const bubbleVariants = (delay) => ({
@@ -102,28 +123,34 @@ const HomePage = () => {
       audio.play().then(() => setMusicPlaying(true));
     }
   };
+
   // API call
   const handleSubmit = async (formStep2Data) => {
     try {
-      const fullData = { ...formData, ...formStep2Data };
+      const { image, ...dataToSend } = { ...formData, ...formStep2Data }; // Exclude image from backend request
+      console.log("Data sent to backend:", dataToSend); // Debug
       const res = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(fullData),
+        body: JSON.stringify(dataToSend),
       });
 
-      if (!res.ok) throw new Error("Network error");
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Network error: ${res.status} ${errorText}`);
+      }
 
       const data = await res.json();
-
-      setResult({ ...fullData, ...data });
+      console.log("Backend response:", data); // Debug
+      setResult({ ...formData, ...formStep2Data, ...data }); // Include image in result for display
       setCurrentStep(3); // Show result
       toast.success("Prediction completed!");
     } catch (err) {
-      console.error(err);
-      toast.error("Prediction failed! Try again.");
+      console.error("Fetch error:", err);
+      toast.error(`Prediction failed: ${err.message}`);
     }
   };
+
   return (
     <div className="relative h-dvh w-full px-40 overflow-hidden bg-black">
       {/* Background video */}
@@ -214,7 +241,6 @@ const HomePage = () => {
                 text="Brace yourself captain, the night is dark... ❄️"
                 onComplete={() => setBubble3Visible(true)}
               />
-              {/* <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-blue-500/20 backdrop-blur-md rotate-45" /> */}
             </div>
           </motion.div>
         )}
@@ -234,7 +260,6 @@ const HomePage = () => {
                 text="Don’t let the penguins laugh at you!... 🌌"
                 onComplete={() => setBubble4Visible(true)}
               />
-              {/* <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-blue-500/20 backdrop-blur-md rotate-45" /> */}
             </div>
           </motion.div>
         )}
@@ -286,7 +311,11 @@ const HomePage = () => {
           />
         )}
 
-        {currentStep === 3 && <ResultCard result={result} />}
+        {currentStep === 3 && (
+          <ErrorBoundary>
+            <ResultCard result={result} />
+          </ErrorBoundary>
+        )}
       </div>
 
       {/* Center helper pulse */}

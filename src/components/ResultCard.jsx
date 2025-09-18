@@ -3,11 +3,12 @@ import React from "react";
 const ResultCard = ({ result }) => {
   // Ensure result exists to avoid accessing undefined properties
   if (!result) {
-    return <div>No result available</div>;
+    return (
+      <div className="text-white text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg">
+        No result available
+      </div>
+    );
   }
-
-  // Handle the image (assuming it's a File object from FormStep1)
-  const imageUrl = result.image ? URL.createObjectURL(result.image) : null;
 
   return (
     <div className="max-w-4xl mx-auto mt-24 p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg text-white">
@@ -16,13 +17,17 @@ const ResultCard = ({ result }) => {
         <p>
           <strong>Name:</strong> {result.name || "N/A"}
         </p>
-        {imageUrl && (
+        {result.image && (
           <div>
             <strong>Image:</strong>
             <img
-              src={imageUrl}
+              src={result.image}
               alt="Passenger"
-              className="w-32 h-32 object-cover rounded"
+              className="w-32 h-32 object-cover rounded-full mx-auto mt-2"
+              onError={(e) => {
+                e.target.style.display = "none"; // Hide image if it fails to load
+                console.error("Failed to load image");
+              }}
             />
           </div>
         )}
@@ -38,16 +43,16 @@ const ResultCard = ({ result }) => {
           <strong>Sex:</strong> {result.sex === 0 ? "Male" : "Female"}
         </p>
         <p>
-          <strong>Age:</strong> {result.age}
+          <strong>Age:</strong> {result.age || "N/A"}
         </p>
         <p>
-          <strong>Siblings/Spouses:</strong> {result.sibsp}
+          <strong>Siblings/Spouses:</strong> {result.sibsp || "0"}
         </p>
         <p>
-          <strong>Parents/Children:</strong> {result.parch}
+          <strong>Parents/Children:</strong> {result.parch || "0"}
         </p>
         <p>
-          <strong>Fare:</strong> ${result.fare.toFixed(2)}
+          <strong>Fare:</strong> ${result.fare ? result.fare.toFixed(2) : "N/A"}
         </p>
         <p>
           <strong>Port of Embarkation:</strong>{" "}
@@ -55,11 +60,17 @@ const ResultCard = ({ result }) => {
             ? "Cherbourg"
             : result.embarked === 1
             ? "Queenstown"
-            : "Southampton"}
+            : result.embarked === 2
+            ? "Southampton"
+            : "N/A"}
         </p>
         <p>
           <strong>Survival Prediction:</strong>{" "}
-          {result.Survived === 1 ? "Survived" : "Did Not Survive"}
+          {result.Survived === 1
+            ? "Survived"
+            : result.Survived === 0
+            ? "Did Not Survive"
+            : "Unknown"}
         </p>
       </div>
     </div>
