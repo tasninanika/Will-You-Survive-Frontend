@@ -131,7 +131,7 @@ const HomePage = () => {
         {bubble1Visible && (
           <motion.div
             className="absolute top-20 left-1/2 -translate-x-1/2 max-w-[600px]"
-            variants={bubbleVariants(0.2)}
+            variants={bubbleVariants(0.3)}
             initial="hidden"
             animate="visible"
           >
@@ -168,14 +168,15 @@ const HomePage = () => {
         {/* Bubble 2 */}
         {bubble2Visible && (
           <motion.div
-            className="absolute left-6 top-1/3 md:left-20 max-w-[360px]"
+            className="absolute left-6 top-2/4 md:left-20 max-w-[360px]"
             variants={bubbleVariants(0.4)}
             initial="hidden"
             animate="visible"
           >
             <div className="relative p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
               <h2 className="text-white text-lg font-bold">
-                🌊 Iceberg Ahead!
+                OMG! <br />
+                🌊 An Iceberg Ahead!
               </h2>
               <TypingText
                 text="Brace yourself captain, the night is dark... ❄️"
