@@ -363,7 +363,7 @@ const ResultCard = ({ result }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden">
+    <div className="max-w-md mx-auto mt-12 md:mt-16 p-4 md:p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden w-[90%]">
       {/* Confetti effect for survivors */}
       {showConfetti && (
         <Confetti
@@ -384,7 +384,7 @@ const ResultCard = ({ result }) => {
           gravity={0.35}
           initialVelocityY={50}
           initialVelocityX={{ min: -30, max: 30 }}
-          tweenDuration={5000}
+          tweenDuration={6000}
           confettiSource={{
             x: 0,
             y: 0,
@@ -399,7 +399,7 @@ const ResultCard = ({ result }) => {
         variants={cardVariants}
         initial="hidden"
         animate="visible"
-        className={`p-6 rounded-2xl ${
+        className={`p-4 md:p-6 rounded-2xl ${
           isSurvived
             ? "bg-gradient-to-br from-pink-700 to-purple-700/50 shadow-lg shadow-pink-500/20"
             : "bg-gradient-to-br from-gray-900/70 to-black/90 border border-gray-600/50"
@@ -410,7 +410,7 @@ const ResultCard = ({ result }) => {
           <motion.img
             src={result.image}
             alt={result.name || "Passenger"}
-            className="w-44 h-44 rounded-full object-cover mx-auto mb-4 border-4 border-white/40 shadow-xl"
+            className="w-32 h-32 md:w-44 md:h-44 rounded-full object-cover mx-auto mb-3 md:mb-4 border-4 border-white/40 shadow-xl"
             variants={imageVariants}
             onError={(e) => {
               e.target.style.display = "none";
@@ -420,7 +420,7 @@ const ResultCard = ({ result }) => {
         )}
 
         {/* Name */}
-        <h2 className="text-white text-4xl font-extrabold mb-2 tracking-tight">
+        <h2 className="text-white text-2xl md:text-4xl font-extrabold mb-2 tracking-tight">
           {result.name || "Unknown Passenger"}
         </h2>
 
@@ -428,40 +428,44 @@ const ResultCard = ({ result }) => {
         {isSurvived ? (
           <>
             <motion.h3
-              className="text-green-400 text-2xl font-bold mb-3"
+              className="text-green-400 text-xl md:text-2xl font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               Survived! 🎉
             </motion.h3>
-            <p className="text-white/90 text-lg font-medium">{randomMessage}</p>
+            <p className="text-white/90 text-base md:text-lg font-medium">
+              {randomMessage}
+            </p>
           </>
         ) : (
           <>
             <motion.h3
-              className="text-red-500 text-xl font-bold mb-3"
+              className="text-red-500 text-lg md:text-xl font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              RIP 😔
+              RIP
             </motion.h3>
-            <p className="text-white/90 text-md font-medium">{randomMessage}</p>
+            <p className="text-white/90 text-sm md:text-md font-medium">
+              {randomMessage}
+            </p>
           </>
         )}
 
         {/* Share and Download Buttons */}
-        <div className="mt-4 flex justify-center gap-3">
+        <div className="mt-4 flex justify-center gap-2 md:gap-3">
           <button
             onClick={handleShare}
-            className="px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200"
+            className="px-6 md:px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
           >
             Share
           </button>
           <button
             onClick={handleDownload}
-            className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200"
+            className="px-3 md:px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
           >
             Download
           </button>
