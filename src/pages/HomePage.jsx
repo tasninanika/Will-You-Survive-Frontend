@@ -339,13 +339,13 @@ const HomePage = () => {
             onClick={toggleMusic}
             className={`px-3 py-1 rounded-lg font-semibold transition-colors ${
               musicPlaying
-                ? " bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 border-0 text-white"
-                : "bg-pink-500/70 hover:bg-pink-500/90 text-white"
+                ? " bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 border-0 text-white font-crimson"
+                : "bg-pink-500/70 hover:bg-pink-500/90 text-white font-crimson"
             }`}
           >
             {musicPlaying ? "🔊 On" : "🔇 Off"}
           </button>
-          <span className="text-white text-sm">Titanic Theme</span>
+          <span className="text-white text-sm font-crimson">Titanic Theme</span>
         </motion.div>
       )}
 
