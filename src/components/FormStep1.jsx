@@ -43,12 +43,14 @@ const FormStep1 = ({ onNext }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20">
-      <h2 className="text-white text-3xl font-bold mb-6 tracking-tight">
-        Wait... <br /> why so hurry?{" "}
+    <div className="max-w-md mx-auto mt-4 md:mt-10 p-4 md:p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20 w-[90%]">
+      <h2 className="text-white text-2xl md:text-3xl font-bold mb-2 md:mb-2 tracking-tight">
+        why so hurry?{" "}
       </h2>
-      <p>Say who you are first, so history remembers you!</p>
-      <div className="space-y-6">
+      <p className="text-white/90 text-xs mb-4 md:mb-4">
+        Say who you are first, so history remembers you!
+      </p>
+      <div className="space-y-4 md:space-y-6">
         <div>
           <label className="text-white font-semibold block mb-2 text-left font-crimson">
             Name
@@ -59,7 +61,7 @@ const FormStep1 = ({ onNext }) => {
             value={name}
             required
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/50 border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none transition-all font-crimson"
+            className="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/50 border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none transition-all font-crimson text-sm md:text-base"
           />
         </div>
         <div>
@@ -71,7 +73,7 @@ const FormStep1 = ({ onNext }) => {
             accept="image/*"
             required
             onChange={handleImageChange}
-            className="w-full p-2 rounded-lg bg-white/10 text-white border border-purple-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white file:font-semibold hover:file:bg-gradient-to-l cursor-pointer font-crimson"
+            className="w-full p-2 rounded-lg bg-white/10 text-white border border-purple-500/50 file:mr-2 file:py-2 file:px-3 md:file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white file:font-semibold hover:file:bg-gradient-to-l cursor-pointer font-crimson text-xs md:text-sm"
           />
         </div>
         {image && (
@@ -79,13 +81,13 @@ const FormStep1 = ({ onNext }) => {
             <img
               src={image}
               alt="Preview"
-              className="w-32 h-32 rounded-full object-cover border-2 border-white/20 shadow-lg"
+              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-2 border-white/20 shadow-lg"
             />
           </div>
         )}
         <button
           onClick={handleNext}
-          className="w-full py-3 px-6 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson"
+          className="md:w-full md:py-3 md:px-6 px-4 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-3xl font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson ml-auto block text-xs md:text-base"
         >
           Next
         </button>

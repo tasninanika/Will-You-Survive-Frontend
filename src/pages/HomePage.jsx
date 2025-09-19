@@ -337,7 +337,7 @@ const HomePage = () => {
           initial={{ x: -200, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -200, opacity: 0 }}
-          className="fixed bottom-6 left-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl shadow-lg flex items-center gap-3 md:px-4 md:py-2 px-2 py-1"
+          className="fixed md:bottom-6 bottom-2 left-2 md:left-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl shadow-lg flex items-center gap-3 md:px-4 md:py-2 px-2 py-1"
         >
           <button
             onClick={toggleMusic}
