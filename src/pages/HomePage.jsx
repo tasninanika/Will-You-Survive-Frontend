@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import FormStep1 from "../components/FormStep1";
 import FormStep2 from "../components/FormStep2";
 import ResultCard from "../components/ResultCard";
+import Titanic from "../assets/Titanic.png";
 
 // Error Boundary component
 class ErrorBoundary extends React.Component {
@@ -207,12 +208,17 @@ const HomePage = () => {
       {/* Title */}
       <div className="relative z-10 flex justify-center pt-16">
         <motion.h1
-          className="text-center text-4xl md:text-6xl font-black text-white drop-shadow-lg"
+          className="flex items-center text-center text-4xl md:text-6xl font-black text-white drop-shadow-lg"
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 12 }}
         >
-          🚢Titanic Challenge
+          <img
+            src={Titanic}
+            alt=""
+            className="w-12 h-12 md:w-16 md:h-16 mr-4"
+          />
+          Titanic Challenge
         </motion.h1>
       </div>
 
