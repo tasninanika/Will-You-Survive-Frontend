@@ -5,7 +5,8 @@ import toast from "react-hot-toast";
 import Ocean from "../assets/ship.mp4";
 import Audio from "../assets/titanic-theme.mp3";
 import Robot from "../assets/robot.json";
-import LoadingAnimation from "../assets/loading.json"; // Add this import
+import LoadingAnimation from "../assets/loading.json";
+import LoadingAnimation1 from "../assets/loading1.json";
 import React, { useEffect, useState } from "react";
 import FormStep1 from "../components/FormStep1";
 import FormStep2 from "../components/FormStep2";
@@ -83,6 +84,7 @@ const HomePage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showFormStep2, setShowFormStep2] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false); // Add this state
 
   const [bubble1Visible, setBubble1Visible] = useState(false);
   const [bubble2Visible, setBubble2Visible] = useState(false);
@@ -134,11 +136,11 @@ const HomePage = () => {
   // API call
   const handleSubmit = async (formStep2Data) => {
     setIsLoading(true);
-    setShowFormStep2(false); // Start loading
+    setShowFormStep2(false);
 
     try {
-      const { image, ...dataToSend } = { ...formData, ...formStep2Data }; // Exclude image from backend request
-      console.log("Data sent to backend:", dataToSend); // Debug
+      const { image, ...dataToSend } = { ...formData, ...formStep2Data };
+      console.log("Data sent to backend:", dataToSend);
       const res = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -151,20 +153,34 @@ const HomePage = () => {
       }
 
       const data = await res.json();
-      console.log("Backend response:", data); // Debug
-      setResult({ ...formData, ...formStep2Data, ...data }); // Include image in result for display
+      console.log("Backend response:", data);
+      setResult({ ...formData, ...formStep2Data, ...data });
 
-      // Add a small delay to show loading animation
       setTimeout(() => {
         setIsLoading(false);
-        setCurrentStep(3); // Show result
-        toast.success("Prediction completed!");
+        setCurrentStep(3);
+        toast.success("Yahooooo!");
       }, 1500);
     } catch (err) {
       console.error("Fetch error:", err);
       setIsLoading(false);
       toast.error(`Prediction failed: ${err.message}`);
     }
+  };
+
+  const handleJumpIn = () => {
+    setIsTransitioning(true);
+    setBubble1Visible(false);
+    setBubble2Visible(false);
+    setBubble3Visible(false);
+    setBubble4Visible(false);
+
+    // Show loading for 1.5 seconds before showing FormStep1
+    setTimeout(() => {
+      setIsTransitioning(false);
+      setShowIntro(false);
+      setCurrentStep(1);
+    }, 1500);
   };
 
   return (
@@ -293,24 +309,30 @@ const HomePage = () => {
               </h3>
               <TypingText text="The iceberg won't wait for anyone. 😏" />
               <div className="md:mt-4 mt-2">
-                <Link
-                  onClick={() => {
-                    setBubble1Visible(false);
-                    setBubble2Visible(false);
-                    setBubble3Visible(false);
-                    setBubble4Visible(false);
-                    setShowIntro(false);
-                    setCurrentStep(1);
-                  }}
+                <button
+                  onClick={handleJumpIn}
                   className="btn btn-primary w-28 md:w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full text-xs md:text-sm"
                 >
                   Jump In! ⚓
-                </Link>
+                </button>
               </div>
             </div>
           </motion.div>
         )}
-        {!showIntro && currentStep === 1 && (
+
+        {/* Transition Loading Animation */}
+        {isTransitioning && (
+          <div className="absolute top-50 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+            <Lottie
+              animationData={LoadingAnimation1}
+              loop={true}
+              autoplay={true}
+              className="w-full h-full "
+            />
+          </div>
+        )}
+
+        {!showIntro && currentStep === 1 && !isTransitioning && (
           <FormStep1
             onNext={(name, image) => {
               setFormData({ ...formData, name, image });
@@ -330,12 +352,12 @@ const HomePage = () => {
 
         {/* Loading Animation */}
         {isLoading && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 items-center">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
             <Lottie
               animationData={LoadingAnimation}
               loop={true}
               autoplay={true}
-              className="md:w-96 md:h-96"
+              className="w-full h-full"
             />
           </div>
         )}
