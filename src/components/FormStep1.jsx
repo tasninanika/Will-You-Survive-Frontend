@@ -45,11 +45,12 @@ const FormStep1 = ({ onNext }) => {
   return (
     <div className="max-w-md mx-auto mt-10 p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20">
       <h2 className="text-white text-3xl font-bold mb-6 tracking-tight">
-        Your Info
+        Wait... <br /> why so hurry?{" "}
       </h2>
+      <p>Say who you are first, so history remembers you!</p>
       <div className="space-y-6">
         <div>
-          <label className="text-white font-semibold block mb-2 text-left">
+          <label className="text-white font-semibold block mb-2 text-left font-crimson">
             Name
           </label>
           <input
@@ -58,11 +59,11 @@ const FormStep1 = ({ onNext }) => {
             value={name}
             required
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/50 border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none transition-all"
+            className="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/50 border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none transition-all font-crimson"
           />
         </div>
         <div>
-          <label className="text-white font-semibold block mb-2 text-left">
+          <label className="text-white font-semibold block mb-2 text-left font-crimson">
             Upload Image
           </label>
           <input
@@ -70,7 +71,7 @@ const FormStep1 = ({ onNext }) => {
             accept="image/*"
             required
             onChange={handleImageChange}
-            className="w-full p-2 rounded-lg bg-white/10 text-white border border-purple-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white file:font-semibold hover:file:bg-gradient-to-l cursor-pointer"
+            className="w-full p-2 rounded-lg bg-white/10 text-white border border-purple-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-purple-600 file:text-white file:font-semibold hover:file:bg-gradient-to-l cursor-pointer font-crimson"
           />
         </div>
         {image && (
@@ -84,7 +85,7 @@ const FormStep1 = ({ onNext }) => {
         )}
         <button
           onClick={handleNext}
-          className="w-full py-3 px-6 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform duration-300"
+          className="w-full py-3 px-6 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson"
         >
           Next
         </button>
