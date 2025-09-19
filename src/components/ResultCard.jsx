@@ -130,29 +130,24 @@ const ResultCard = ({ result }) => {
 
   // Download card as PNG
   const handleDownload = () => {
-    if (!cardRef.current || !cardRef.current.parentElement) {
+    if (!cardRef.current) {
       toast.error("Card not ready for download. Please try again.", {
         id: "download",
       });
-      console.error("cardRef or parentElement is null or undefined");
+      console.error("cardRef is null or undefined");
       return;
     }
 
     toast.loading("Generating your Titanic card...", { id: "download" });
     console.log("Starting canvas-based capture...");
 
-    // Get outer card dimensions
-    const outerRect = cardRef.current.parentElement.getBoundingClientRect();
-    const outerWidth = outerRect.width;
-    const outerHeight = outerRect.height;
-    const scale = 2; // High DPI scaling
-    const canvasWidth = outerWidth * scale;
-    const canvasHeight = outerHeight * scale;
-
     // Get inner card dimensions
     const innerRect = cardRef.current.getBoundingClientRect();
     const innerWidth = innerRect.width;
     const innerHeight = innerRect.height;
+    const scale = 2; // High DPI scaling
+    const canvasWidth = innerWidth * scale;
+    const canvasHeight = innerHeight * scale;
 
     // Create canvas
     const canvas = document.createElement("canvas");
@@ -170,96 +165,42 @@ const ResultCard = ({ result }) => {
     // Set high DPI scaling
     ctx.scale(scale, scale);
 
-    // Helper function to draw rounded rectangle
-    const roundRect = (x, y, w, h, radius) => {
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.arcTo(x + w, y, x + w, y + h, radius);
-      ctx.arcTo(x + w, y + h, x, y + h, radius);
-      ctx.arcTo(x, y + h, x, y, radius);
-      ctx.arcTo(x, y, x + w, y, radius);
-      ctx.closePath();
-    };
-
-    // Adjust for crisp borders
-    const borderWidth = 0.5;
-    const halfBorder = borderWidth / 2;
-
-    // Step 1: Draw outer card gradient
-    const outerGradient = ctx.createLinearGradient(0, 0, 0, outerHeight);
-    outerGradient.addColorStop(0, "rgba(0, 0, 0, 0.5)");
-    outerGradient.addColorStop(1, "rgba(55, 48, 163, 0.3)");
-    ctx.fillStyle = outerGradient;
-    roundRect(0, 0, outerWidth, outerHeight, 24);
-    ctx.fill();
-
-    // Step 2: Draw outer card shadow and border
-    ctx.save();
-    ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-    ctx.shadowBlur = 24;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 12;
-    roundRect(0, 0, outerWidth, outerHeight, 24);
-    ctx.fill();
-    ctx.restore();
-
-    ctx.strokeStyle = "rgba(107, 114, 128, 0.3)"; // border-gray-500/30
-    ctx.lineWidth = borderWidth;
-    roundRect(
-      halfBorder,
-      halfBorder,
-      outerWidth - borderWidth,
-      outerHeight - borderWidth,
-      24 - halfBorder
-    );
-    ctx.stroke();
-
-    // Step 3: Draw inner card background gradient
-    const outerPadding = 16;
+    // Step 1: Draw inner card background gradient with restored vibrant colors
     let innerGradient;
     if (isSurvived) {
-      innerGradient = ctx.createLinearGradient(
-        outerPadding,
-        outerPadding,
-        outerPadding,
-        outerHeight - outerPadding
-      );
-      innerGradient.addColorStop(0, "rgba(219, 39, 119, 0.5)"); // pink-600/50
-      innerGradient.addColorStop(1, "rgba(126, 34, 206, 0.5)"); // purple-700/50
+      innerGradient = ctx.createLinearGradient(0, 0, 0, innerHeight);
+      innerGradient.addColorStop(0, "rgb(219, 39, 119)"); // pink-600
+      innerGradient.addColorStop(1, "rgb(126, 34, 206)"); // purple-700
     } else {
-      innerGradient = ctx.createLinearGradient(
-        outerPadding,
-        outerPadding,
-        outerPadding,
-        outerHeight - outerPadding
-      );
-      innerGradient.addColorStop(0, "rgba(17, 24, 39, 0.7)"); // gray-900/70
-      innerGradient.addColorStop(1, "rgba(0, 0, 0, 0.9)"); // black/90
+      innerGradient = ctx.createLinearGradient(0, 0, 0, innerHeight);
+      innerGradient.addColorStop(0, "rgb(17, 24, 39)"); // gray-900
+      innerGradient.addColorStop(1, "rgb(0, 0, 0)"); // black
     }
     ctx.fillStyle = innerGradient;
-    roundRect(outerPadding, outerPadding, innerWidth, innerHeight, 16);
+    ctx.rect(0, 0, innerWidth, innerHeight); // Sharp rectangle, no rounded corners
     ctx.fill();
 
-    // Step 4: Draw inner card shadow and border
+    // Step 2: Draw inner card shadow and border
+    const borderWidth = 1; // Consistent with UI
+    const halfBorder = borderWidth / 2;
     ctx.save();
     if (isSurvived) {
-      ctx.shadowColor = "rgba(236, 72, 153, 0.2)"; // pink-500/20
+      ctx.shadowColor = "rgba(236, 72, 153, 0.4)"; // pink-500/40
       ctx.shadowBlur = 20;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 10;
     } else {
-      ctx.shadowColor = "rgba(75, 85, 99, 0.5)"; // gray-600/50
+      ctx.shadowColor = "rgba(75, 85, 99, 0.6)"; // gray-600/60
       ctx.shadowBlur = 20;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 10;
-      ctx.strokeStyle = "rgba(75, 85, 99, 0.5)"; // border-gray-600/50
+      ctx.strokeStyle = "rgba(75, 85, 99, 0.6)"; // border-gray-600/60
       ctx.lineWidth = borderWidth;
-      roundRect(
-        outerPadding + halfBorder,
-        outerPadding + halfBorder,
+      ctx.rect(
+        halfBorder,
+        halfBorder,
         innerWidth - borderWidth,
-        innerHeight - borderWidth,
-        16 - halfBorder
+        innerHeight - borderWidth
       );
       ctx.stroke();
     }
@@ -267,14 +208,13 @@ const ResultCard = ({ result }) => {
     ctx.fill();
     ctx.restore();
 
-    // Step 5: Calculate content height for vertical centering
+    // Step 3: Calculate content height for vertical centering
     const imgSize = result.image ? 160 : 0;
     const imgMargin = result.image ? 16 : 0;
     const nameHeight = 30;
     const nameMargin = 8;
     const statusHeight = 24;
     const statusMargin = 12;
-    // Estimate message height (assuming up to 2 lines for simplicity)
     const messageLineHeight = 20;
     const messageLines =
       Math.ceil(ctx.measureText(randomMessage).width / (innerWidth - 48)) || 1;
@@ -291,18 +231,17 @@ const ResultCard = ({ result }) => {
     // Calculate starting Y to center content vertically in inner card
     const innerPadding = 24; // Matches p-6 (padding: 1.5rem = 24px)
     const availableHeight = innerHeight - 2 * innerPadding;
-    const startY =
-      outerPadding + innerPadding + (availableHeight - totalContentHeight) / 2;
+    const startY = innerPadding + (availableHeight - totalContentHeight) / 2;
 
     let currentY = startY;
 
-    // Step 6: Load and draw image if present
+    // Step 4: Load and draw image if present
     if (result.image) {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload = () => {
         // Draw circular image
-        const imgX = outerPadding + (innerWidth - imgSize) / 2;
+        const imgX = (innerWidth - imgSize) / 2;
         const imgY = currentY;
 
         // Clip to circle
@@ -372,7 +311,7 @@ const ResultCard = ({ result }) => {
       ctx.textBaseline = "top";
       ctx.fillText(
         result.name || "Unknown Passenger",
-        outerPadding + innerWidth / 2,
+        innerWidth / 2,
         currentY
       );
       currentY += nameHeight + nameMargin;
@@ -382,7 +321,7 @@ const ResultCard = ({ result }) => {
       ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444"; // green-400 or red-500
       ctx.fillText(
         isSurvived ? "Survived! 🎉" : "RIP 😔",
-        outerPadding + innerWidth / 2,
+        innerWidth / 2,
         currentY
       );
       currentY += statusHeight + statusMargin;
@@ -398,14 +337,14 @@ const ResultCard = ({ result }) => {
         const testLine = line + word + " ";
         const metrics = ctx.measureText(testLine);
         if (metrics.width > maxWidth && line !== "") {
-          ctx.fillText(line.trim(), outerPadding + innerWidth / 2, currentY);
+          ctx.fillText(line.trim(), innerWidth / 2, currentY);
           line = word + " ";
           currentY += lineHeight;
         } else {
           line = testLine;
         }
       });
-      ctx.fillText(line.trim(), outerPadding + innerWidth / 2, currentY);
+      ctx.fillText(line.trim(), innerWidth / 2, currentY);
 
       // Finalize download
       finalizeDownload();
@@ -468,7 +407,7 @@ const ResultCard = ({ result }) => {
         animate="visible"
         className={`p-6 rounded-2xl ${
           isSurvived
-            ? "bg-gradient-to-br from-pink-600/50 to-purple-700/50 shadow-lg shadow-pink-500/20"
+            ? "bg-gradient-to-br from-pink-700 to-purple-700/50 shadow-lg shadow-pink-500/20"
             : "bg-gradient-to-br from-gray-900/70 to-black/90 border border-gray-600/50"
         }`}
       >
