@@ -384,7 +384,7 @@ const ResultCard = ({ result }) => {
           gravity={0.35}
           initialVelocityY={50}
           initialVelocityX={{ min: -30, max: 30 }}
-          tweenDuration={6000}
+          tweenDuration={5000}
           confettiSource={{
             x: 0,
             y: 0,
