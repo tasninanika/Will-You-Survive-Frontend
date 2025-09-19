@@ -36,21 +36,15 @@ const ResultCard = ({ result }) => {
   ];
 
   const nonSurvivalMessages = [
-    result.name
-      ? `${result.name}, Titanic-er iceberg tomar kotha mone rakhbe. 😔`
-      : "Titanic-er iceberg ekti asamanya baktir kotha mone rakhbe. 😔",
-    result.name
-      ? `${result.name}, iceberg-er sathe dance korte gele keno? 😢`
-      : "Ek asamanya bakti, iceberg-er sathe dance korte geche! 😢",
-    result.name
-      ? `${result.name}, Titanic bolche, abar try koro! 🪦`
-      : "Ek asamanya bakti, Titanic bolche, abar try koro! 🪦",
-    result.name
-      ? `${result.name}, iceberg toke ekta valobashar patro likhbe! 😞`
-      : "Iceberg ek asamanya baktir jonno patro likhbe! 😞",
-    result.name
-      ? `${result.name}, Titanic-er pani tomar jonno thanda chilo na? 😔`
-      : "Ek asamanya bakti, Titanic-er thanda pani te dublo! 😔",
+    "Titanic said: Nice try, but swimming lessons next time!😅",
+
+    "You sank faster than the Wi-Fi on the Titanic!🚢",
+
+    "Even Jack had more screen time than you!🚢",
+
+    "Titanic survived longer than you did!😬",
+
+    "Even the iceberg felt sorry for you!😂 ",
   ];
 
   // Set random message once on mount
