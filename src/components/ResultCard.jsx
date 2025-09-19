@@ -139,7 +139,7 @@ const ResultCard = ({ result }) => {
     const innerRect = cardRef.current.getBoundingClientRect();
     const innerWidth = innerRect.width;
     const innerHeight = innerRect.height;
-    const scale = 2; // High DPI scaling
+    const scale = 2;
     const canvasWidth = innerWidth * scale;
     const canvasHeight = innerHeight * scale;
 
@@ -167,19 +167,19 @@ const ResultCard = ({ result }) => {
       innerGradient.addColorStop(1, "rgb(126, 34, 206)"); // purple-700
     } else {
       innerGradient = ctx.createLinearGradient(0, 0, 0, innerHeight);
-      innerGradient.addColorStop(0, "rgb(17, 24, 39)"); // gray-900
-      innerGradient.addColorStop(1, "rgb(0, 0, 0)"); // black
+      innerGradient.addColorStop(0, "rgb(17, 24, 39)");
+      innerGradient.addColorStop(1, "rgb(0, 0, 0)");
     }
     ctx.fillStyle = innerGradient;
-    ctx.rect(0, 0, innerWidth, innerHeight); // Sharp rectangle, no rounded corners
+    ctx.rect(0, 0, innerWidth, innerHeight);
     ctx.fill();
 
     // Step 2: Draw inner card shadow and border
-    const borderWidth = 1; // Consistent with UI
+    const borderWidth = 1;
     const halfBorder = borderWidth / 2;
     ctx.save();
     if (isSurvived) {
-      ctx.shadowColor = "rgba(236, 72, 153, 0.4)"; // pink-500/40
+      ctx.shadowColor = "rgba(236, 72, 153, 0.4)";
       ctx.shadowBlur = 20;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 10;
