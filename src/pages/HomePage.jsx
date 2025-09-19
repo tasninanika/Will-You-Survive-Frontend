@@ -70,7 +70,11 @@ const TypingText = ({ text, speed = 50, onComplete }) => {
     return () => clearInterval(interval);
   }, [text, speed, onComplete, finished]);
 
-  return <p className="text-white/85 mt-4 text-base font-mono">{displayed}</p>;
+  return (
+    <p className="text-white/85 md:mt-4 text-xs mt-2 md:text-base font-mono">
+      {displayed}
+    </p>
+  );
 };
 
 const HomePage = () => {
@@ -152,7 +156,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="relative h-dvh w-full px-40 overflow-hidden bg-black">
+    <div className="relative h-dvh w-full px-4 md:px-40 overflow-hidden bg-black">
       {/* Background video */}
       <video
         autoPlay
@@ -180,7 +184,7 @@ const HomePage = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 12 }}
         >
-          🚢 Titanic Challenge
+          🚢Titanic Challenge
         </motion.h1>
       </div>
 
@@ -189,13 +193,13 @@ const HomePage = () => {
         {/* Top Bubble */}
         {bubble1Visible && (
           <motion.div
-            className="absolute top-20 left-1/2 -translate-x-1/2 max-w-[600px]"
+            className="absolute top-10 md:top-20 left-1/2 -translate-x-1/2 max-w-[600px]"
             variants={bubbleVariants(0.3)}
             initial="hidden"
             animate="visible"
           >
             <div className="relative p-20 bg-gradient-to-br from-purple-500/20 to-indigo-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              {/* Robot animation centered above heading */}
+              {/* Robot animation  */}
               <motion.div
                 className="absolute top-10 left-1/2 -translate-x-1/2 w-40"
                 variants={floatVariants}
@@ -205,10 +209,10 @@ const HomePage = () => {
               </motion.div>
 
               <h2 className="text-white text-3xl md:text-5xl font-bold mt-12">
-                Hello, Captain!
+                Hello, Adventurer!
               </h2>
               <TypingText text="Ready for an Adventure? 🧭" />
-              {/* YES Button */}
+              {/* Button */}
               <motion.button
                 onClick={() => {
                   setBubble1Visible(false);
@@ -227,13 +231,13 @@ const HomePage = () => {
         {/* Bubble 2 */}
         {bubble2Visible && (
           <motion.div
-            className="absolute left-6 top-40 md:left-20 max-w-[360px]"
+            className="absolute  left-10 top-10 md:top-40 md:left-20 max-w-[360px] w-[75%]"
             variants={bubbleVariants(0.4)}
             initial="hidden"
             animate="visible"
           >
             <div className="relative p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white text-lg font-bold">
+              <h2 className="text-white md:text-lg font-bold">
                 OMG! <br />
                 🌊 An Iceberg Ahead!
               </h2>
@@ -247,13 +251,13 @@ const HomePage = () => {
         {/* Right Bubble */}
         {bubble3Visible && (
           <motion.div
-            className="absolute right-6 top-40 md:right-20 max-w-[360px]"
+            className="absolute right-11 w-[75%] top-45 md:top-40 md:right-20 max-w-[360px]"
             variants={bubbleVariants(0.6)}
             initial="hidden"
             animate="visible"
           >
             <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white text-xl font-bold">
+              <h2 className="text-white text-base md:text-xl font-bold">
                 🧊 Are you brave enough to face the Titanic’s fate?
               </h2>
               <TypingText
@@ -266,17 +270,17 @@ const HomePage = () => {
         {/* Bottom CTA Bubble */}
         {bubble4Visible && (
           <motion.div
-            className="absolute bottom-50 left-1/2 -translate-x-1/2 max-w-[360px]"
+            className="absolute bottom-36 md:bottom-50 left-1/2 -translate-x-1/2 w-[75%] max-w-[360px]"
             variants={bubbleVariants(0.8)}
             initial="hidden"
             animate="visible"
           >
-            <div className="relative p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h3 className="text-white text-xl font-bold">
+            <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
+              <h3 className="text-white  md:text-xl font-bold">
                 🚤 Survive first, panic later!
               </h3>
               <TypingText text="The iceberg won’t wait for anyone. 😏" />
-              <div className="mt-4">
+              <div className="md:mt-4 mt-2">
                 <Link
                   onClick={() => {
                     setBubble1Visible(false);
@@ -286,7 +290,7 @@ const HomePage = () => {
                     setShowIntro(false);
                     setCurrentStep(1);
                   }}
-                  className="btn btn-primary w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full"
+                  className="btn btn-primary w-28 md:w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full text-xs md:text-sm"
                 >
                   Jump In! ⚓
                 </Link>
@@ -333,11 +337,11 @@ const HomePage = () => {
           initial={{ x: -200, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -200, opacity: 0 }}
-          className="fixed bottom-6 left-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl shadow-lg flex items-center gap-3 px-4 py-2"
+          className="fixed bottom-6 left-6 z-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl shadow-lg flex items-center gap-3 md:px-4 md:py-2 px-2 py-1"
         >
           <button
             onClick={toggleMusic}
-            className={`px-3 py-1 rounded-lg font-semibold transition-colors ${
+            className={`md:px-3 py-1 px-2 rounded-lg font-semibold transition-colors md:text-base text-xs ${
               musicPlaying
                 ? " bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 border-0 text-white font-crimson"
                 : "bg-pink-500/70 hover:bg-pink-500/90 text-white font-crimson"
@@ -345,7 +349,9 @@ const HomePage = () => {
           >
             {musicPlaying ? "🔊 On" : "🔇 Off"}
           </button>
-          <span className="text-white text-sm font-crimson">Titanic Theme</span>
+          <span className="text-white md:text-base text-xs font-crimson">
+            Titanic Theme
+          </span>
         </motion.div>
       )}
 
