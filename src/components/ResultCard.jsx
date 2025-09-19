@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
+import toast from "react-hot-toast";
 
 const ResultCard = ({ result }) => {
   // Ensure result exists to avoid accessing undefined properties
@@ -14,6 +15,8 @@ const ResultCard = ({ result }) => {
 
   const isSurvived = result.Survived === 1;
   const [showConfetti, setShowConfetti] = useState(isSurvived);
+  const [randomMessage, setRandomMessage] = useState("");
+  const cardRef = useRef(null);
 
   // Stop confetti after 6 seconds
   useEffect(() => {
@@ -50,12 +53,13 @@ const ResultCard = ({ result }) => {
       : "Ek asamanya bakti, Titanic-er thanda pani te dublo! 😔",
   ];
 
-  // Randomly select a message
-  const randomMessage = isSurvived
-    ? survivalMessages[Math.floor(Math.random() * survivalMessages.length)]
-    : nonSurvivalMessages[
-        Math.floor(Math.random() * nonSurvivalMessages.length)
-      ];
+  // Set random message once on mount
+  useEffect(() => {
+    const messageArray = isSurvived ? survivalMessages : nonSurvivalMessages;
+    const selectedMessage =
+      messageArray[Math.floor(Math.random() * messageArray.length)];
+    setRandomMessage(selectedMessage);
+  }, []); // Empty dependency array ensures this runs once on mount
 
   // Animation variants for the card
   const cardVariants = {
@@ -83,8 +87,301 @@ const ResultCard = ({ result }) => {
     },
   };
 
+  // Share functionality
+  const handleShare = async () => {
+    const shareText = isSurvived
+      ? `I survived the Titanic! 🎉 ${randomMessage}`
+      : `RIP 😔 ${randomMessage}`;
+    const shareData = {
+      title: "Titanic Survival Prediction",
+      text: shareText,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        toast.success("Shared successfully!");
+      } catch (err) {
+        console.error("Share failed:", err);
+        toast.error("Sharing failed. Try the fallback option.");
+      }
+    } else {
+      // Fallback: Open share links in new tabs
+      const encodedText = encodeURIComponent(shareText);
+      const shareUrls = {
+        x: `https://x.com/intent/tweet?text=${encodedText}&url=${encodeURIComponent(
+          window.location.href
+        )}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodedText}%20${encodeURIComponent(
+          window.location.href
+        )}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          window.location.href
+        )}&quote=${encodedText}`,
+        instagram: `https://www.instagram.com/?caption=${encodedText}%20${encodedUrl}`,
+      };
+      window.open(shareUrls.x, "_blank");
+      toast.success("Opened X for sharing!");
+    }
+  };
+
+  // Download card as PNG
+  const handleDownload = () => {
+    if (!cardRef.current || !cardRef.current.parentElement) {
+      toast.error("Card not ready for download. Please try again.", {
+        id: "download",
+      });
+      console.error("cardRef or parentElement is null or undefined");
+      return;
+    }
+
+    toast.loading("Generating your Titanic card...", { id: "download" });
+    console.log("Starting canvas-based capture...");
+
+    // Get outer card dimensions
+    const outerRect = cardRef.current.parentElement.getBoundingClientRect();
+    const outerWidth = outerRect.width;
+    const outerHeight = outerRect.height;
+    const scale = 2;
+    const canvasWidth = outerWidth * scale;
+    const canvasHeight = outerHeight * scale;
+
+    // Get inner card dimensions
+    const innerRect = cardRef.current.getBoundingClientRect();
+    const innerWidth = innerRect.width;
+    const innerHeight = innerRect.height;
+
+    // Create canvas
+    const canvas = document.createElement("canvas");
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      toast.error("Canvas not supported. Please screenshot the card.", {
+        id: "download",
+      });
+      return;
+    }
+
+    // Set high DPI scaling
+    ctx.scale(scale, scale);
+
+    // Helper function to draw rounded rectangle
+    const roundRect = (x, y, w, h, radius) => {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
+    };
+
+    // Step 1: Draw outer card gradient
+    const outerGradient = ctx.createLinearGradient(0, 0, 0, outerHeight);
+    outerGradient.addColorStop(0, "rgba(0, 0, 0, 0.5)");
+    outerGradient.addColorStop(1, "rgba(55, 48, 163, 0.3)");
+    ctx.fillStyle = outerGradient;
+    roundRect(0, 0, outerWidth, outerHeight, 24);
+    ctx.fill();
+
+    // Step 2: Draw outer card shadow and border
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+    ctx.shadowBlur = 24;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 12;
+    ctx.strokeStyle = "rgba(107, 114, 128, 0.3)"; // border-gray-500/30
+    ctx.lineWidth = 1;
+    roundRect(0, 0, outerWidth, outerHeight, 24);
+    ctx.stroke();
+    ctx.fillStyle = "transparent";
+    ctx.fill();
+    ctx.restore();
+
+    // Step 3: Draw inner card background gradient
+    const outerPadding = 16;
+    let innerGradient;
+    if (isSurvived) {
+      innerGradient = ctx.createLinearGradient(
+        outerPadding,
+        outerHeight - outerPadding,
+        innerWidth + outerPadding,
+        outerPadding
+      );
+      innerGradient.addColorStop(0, "rgba(219, 39, 119, 0.5)");
+      innerGradient.addColorStop(1, "rgba(126, 34, 206, 0.5)");
+    } else {
+      innerGradient = ctx.createLinearGradient(
+        outerPadding,
+        outerHeight - outerPadding,
+        innerWidth + outerPadding,
+        outerPadding
+      );
+      innerGradient.addColorStop(0, "rgba(17, 24, 39, 0.7)");
+      innerGradient.addColorStop(1, "rgba(0, 0, 0, 0.9)");
+    }
+    ctx.fillStyle = innerGradient;
+    roundRect(outerPadding, outerPadding, innerWidth, innerHeight, 16);
+    ctx.fill();
+
+    // Step 4: Draw inner card shadow
+    ctx.save();
+    ctx.shadowColor = isSurvived
+      ? "rgba(236, 72, 153, 0.2)"
+      : "rgba(75, 85, 99, 0.5)";
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 10;
+    ctx.fillStyle = "transparent";
+    if (!isSurvived) {
+      ctx.strokeStyle = "rgba(75, 85, 99, 0.5)";
+      ctx.lineWidth = 1;
+      roundRect(outerPadding, outerPadding, innerWidth, innerHeight, 16);
+      ctx.stroke();
+    }
+    ctx.fill();
+    ctx.restore();
+
+    // Step 5: Load and draw image if present
+    let currentY = outerPadding + 24;
+    if (result.image) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        // Draw circular image
+        const imgSize = 160;
+        const imgX = outerPadding + (innerWidth - imgSize) / 2;
+        const imgY = currentY;
+
+        // Clip to circle
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(
+          imgX + imgSize / 2,
+          imgY + imgSize / 2,
+          imgSize / 2,
+          0,
+          2 * Math.PI
+        );
+        ctx.clip();
+        ctx.drawImage(img, imgX, imgY, imgSize, imgSize);
+        ctx.restore();
+
+        // Draw image border
+        ctx.beginPath();
+        ctx.arc(
+          imgX + imgSize / 2,
+          imgY + imgSize / 2,
+          imgSize / 2,
+          0,
+          2 * Math.PI
+        );
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.stroke();
+
+        // Draw image shadow
+        ctx.save();
+        ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 5;
+        ctx.beginPath();
+        ctx.arc(
+          imgX + imgSize / 2,
+          imgY + imgSize / 2,
+          imgSize / 2,
+          0,
+          2 * Math.PI
+        );
+        ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+        ctx.fill();
+        ctx.restore();
+
+        currentY += imgSize + 16;
+        drawTextContent();
+      };
+      img.onerror = () => {
+        console.error("Failed to load image for canvas:", result.image);
+        currentY += 160 + 16;
+        drawTextContent();
+      };
+      img.src = result.image;
+    } else {
+      drawTextContent();
+    }
+
+    // Helper to draw text content
+    function drawTextContent() {
+      // Draw name
+      ctx.font = "800 30px system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = "#FFFFFF";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(
+        result.name || "Unknown Passenger",
+        outerPadding + innerWidth / 2,
+        currentY
+      );
+      currentY += 30 + 8;
+
+      // Draw status
+      ctx.font = "700 24px system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444";
+      ctx.fillText(
+        isSurvived ? "Survived! 🎉" : "RIP 😔",
+        outerPadding + innerWidth / 2,
+        currentY
+      );
+      currentY += 24 + 12;
+
+      // Draw message
+      ctx.font = "500 16px system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      const maxWidth = innerWidth - 48;
+      const words = randomMessage.split(" ");
+      let line = "";
+      let lineHeight = 20;
+      words.forEach((word) => {
+        const testLine = line + word + " ";
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && line !== "") {
+          ctx.fillText(line.trim(), outerPadding + innerWidth / 2, currentY);
+          line = word + " ";
+          currentY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      });
+      ctx.fillText(line.trim(), outerPadding + innerWidth / 2, currentY);
+
+      // Finalize download
+      finalizeDownload();
+    }
+
+    function finalizeDownload() {
+      const filename = `titanic-result-${result.name || "passenger"}-${
+        isSurvived ? "survived" : "rip"
+      }.png`;
+      const dataUrl = canvas.toDataURL("image/png");
+      console.log("Canvas generated, data URL length:", dataUrl.length);
+
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(`Downloaded: ${filename}`, { id: "download" });
+      console.log("Download triggered successfully:", filename);
+    }
+  };
+
   return (
-    <div className="max-w-md mx-auto mt-16 p-8 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 text-center relative overflow-hidden">
+    <div className="max-w-md mx-auto mt-16 p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden">
       {/* Confetti effect for survivors */}
       {showConfetti && (
         <Confetti
@@ -116,13 +413,14 @@ const ResultCard = ({ result }) => {
       )}
 
       <motion.div
+        ref={cardRef}
         variants={cardVariants}
         initial="hidden"
         animate="visible"
-        className={`p-8 rounded-2xl ${
+        className={`p-6 rounded-2xl ${
           isSurvived
-            ? "bg-gradient-to-br from-pink-500/30 to-purple-600/30 shadow-lg shadow-pink-500/20"
-            : "bg-gradient-to-br from-gray-900/50 to-black/70 border border-gray-600/50"
+            ? "bg-gradient-to-br from-pink-600/50 to-purple-700/50 shadow-lg shadow-pink-500/20"
+            : "bg-gradient-to-br from-gray-900/70 to-black/90 border border-gray-600/50"
         }`}
       >
         {/* Image */}
@@ -130,17 +428,17 @@ const ResultCard = ({ result }) => {
           <motion.img
             src={result.image}
             alt={result.name || "Passenger"}
-            className="w-48 h-48 rounded-full object-cover mx-auto mb-6 border-4 border-white/40 shadow-xl"
+            className="w-44 h-44 rounded-full object-cover mx-auto mb-4 border-4 border-white/40 shadow-xl"
             variants={imageVariants}
             onError={(e) => {
               e.target.style.display = "none";
-              console.error("Failed to load image");
+              console.error("Failed to load image:", e.target.src);
             }}
           />
         )}
 
         {/* Name */}
-        <h2 className="text-white text-3xl font-extrabold mb-3 tracking-tight">
+        <h2 className="text-white text-4xl font-extrabold mb-2 tracking-tight">
           {result.name || "Unknown Passenger"}
         </h2>
 
@@ -148,7 +446,7 @@ const ResultCard = ({ result }) => {
         {isSurvived ? (
           <>
             <motion.h3
-              className="text-green-400 text-2xl font-bold mb-4"
+              className="text-green-400 text-2xl font-bold mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
@@ -160,16 +458,32 @@ const ResultCard = ({ result }) => {
         ) : (
           <>
             <motion.h3
-              className="text-red-500 text-2xl font-bold mb-4"
+              className="text-red-500 text-xl font-bold mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               RIP 😔
             </motion.h3>
-            <p className="text-white/90 text-lg font-medium">{randomMessage}</p>
+            <p className="text-white/90 text-md font-medium">{randomMessage}</p>
           </>
         )}
+
+        {/* Share and Download Buttons */}
+        <div className="mt-4 flex justify-center gap-3">
+          <button
+            onClick={handleShare}
+            className="px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200"
+          >
+            Share
+          </button>
+          <button
+            onClick={handleDownload}
+            className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200"
+          >
+            Download
+          </button>
+        </div>
       </motion.div>
     </div>
   );
