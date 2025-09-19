@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Ocean from "../assets/ship.mp4";
 import Audio from "../assets/titanic-theme.mp3";
 import Robot from "../assets/robot.json";
+import LoadingAnimation from "../assets/loading.json"; // Add this import
 import React, { useEffect, useState } from "react";
 import FormStep1 from "../components/FormStep1";
 import FormStep2 from "../components/FormStep2";
@@ -80,6 +81,8 @@ const TypingText = ({ text, speed = 50, onComplete }) => {
 const HomePage = () => {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showFormStep2, setShowFormStep2] = useState(false);
 
   const [bubble1Visible, setBubble1Visible] = useState(false);
   const [bubble2Visible, setBubble2Visible] = useState(false);
@@ -130,6 +133,9 @@ const HomePage = () => {
 
   // API call
   const handleSubmit = async (formStep2Data) => {
+    setIsLoading(true);
+    setShowFormStep2(false); // Start loading
+
     try {
       const { image, ...dataToSend } = { ...formData, ...formStep2Data }; // Exclude image from backend request
       console.log("Data sent to backend:", dataToSend); // Debug
@@ -147,10 +153,16 @@ const HomePage = () => {
       const data = await res.json();
       console.log("Backend response:", data); // Debug
       setResult({ ...formData, ...formStep2Data, ...data }); // Include image in result for display
-      setCurrentStep(3); // Show result
-      toast.success("Prediction completed!");
+
+      // Add a small delay to show loading animation
+      setTimeout(() => {
+        setIsLoading(false);
+        setCurrentStep(3); // Show result
+        toast.success("Prediction completed!");
+      }, 1500);
     } catch (err) {
       console.error("Fetch error:", err);
+      setIsLoading(false);
       toast.error(`Prediction failed: ${err.message}`);
     }
   };
@@ -258,10 +270,10 @@ const HomePage = () => {
           >
             <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
               <h2 className="text-white text-base md:text-xl font-bold">
-                🧊 Are you brave enough to face the Titanic’s fate?
+                🧊 Are you brave enough to face the Titanic's fate?
               </h2>
               <TypingText
-                text="Don’t let the penguins laugh at you!... 🌌"
+                text="Don't let the penguins laugh at you!... 🌌"
                 onComplete={() => setBubble4Visible(true)}
               />
             </div>
@@ -279,7 +291,7 @@ const HomePage = () => {
               <h3 className="text-white  md:text-xl font-bold">
                 🚤 Survive first, panic later!
               </h3>
-              <TypingText text="The iceberg won’t wait for anyone. 😏" />
+              <TypingText text="The iceberg won't wait for anyone. 😏" />
               <div className="md:mt-4 mt-2">
                 <Link
                   onClick={() => {
@@ -303,11 +315,12 @@ const HomePage = () => {
             onNext={(name, image) => {
               setFormData({ ...formData, name, image });
               setCurrentStep(2);
+              setShowFormStep2(true);
             }}
           />
         )}
 
-        {currentStep === 2 && (
+        {currentStep === 2 && showFormStep2 && (
           <FormStep2
             onNext={(formStep2Data) => {
               handleSubmit(formStep2Data);
@@ -315,7 +328,19 @@ const HomePage = () => {
           />
         )}
 
-        {currentStep === 3 && (
+        {/* Loading Animation */}
+        {isLoading && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 items-center">
+            <Lottie
+              animationData={LoadingAnimation}
+              loop={true}
+              autoplay={true}
+              className="md:w-96 md:h-96"
+            />
+          </div>
+        )}
+
+        {currentStep === 3 && !isLoading && (
           <ErrorBoundary>
             <ResultCard result={result} />
           </ErrorBoundary>
