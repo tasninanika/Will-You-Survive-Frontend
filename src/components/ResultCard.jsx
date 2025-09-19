@@ -1,78 +1,128 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Confetti from "react-confetti";
 
 const ResultCard = ({ result }) => {
   // Ensure result exists to avoid accessing undefined properties
   if (!result) {
     return (
-      <div className="text-white text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg max-w-md mx-auto mt-24">
+      <div className="text-white text-center p-6 bg-white/10 backdrop-blur-lg rounded-2xl shadow-lg max-w-md mx-auto mt-24">
         No result available
       </div>
     );
   }
 
   const isSurvived = result.Survived === 1;
+  const [showConfetti, setShowConfetti] = useState(isSurvived);
+
+  // Stop confetti after 6 seconds
+  useEffect(() => {
+    if (isSurvived) {
+      const timer = setTimeout(() => setShowConfetti(false), 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSurvived]);
+
+  // Arrays of varied survival and non-survival messages
+  const survivalMessages = [
+    "Tumi borolok, taka ache, tai beche gecho! 🚢",
+    "Aha! Tumi to Titanic-er hero, beche gecho! 🎉",
+    "Tumi jhorer mawkhomukhi, beche gecho! 🛳️",
+    "Taka na thakleo, tumi luck diye beche gecho! 😎",
+    "Titanic bolche, tumi ekta legend, beche gecho! 🌟",
+  ];
+
+  const nonSurvivalMessages = [
+    result.name
+      ? `${result.name}, Titanic-er iceberg tomar kotha mone rakhbe. 😔`
+      : "Titanic-er iceberg ekti asamanya baktir kotha mone rakhbe. 😔",
+    result.name
+      ? `${result.name}, iceberg-er sathe dance korte gele keno? 😢`
+      : "Ek asamanya bakti, iceberg-er sathe dance korte geche! 😢",
+    result.name
+      ? `${result.name}, Titanic bolche, abar try koro! 🪦`
+      : "Ek asamanya bakti, Titanic bolche, abar try koro! 🪦",
+    result.name
+      ? `${result.name}, iceberg toke ekta valobashar patro likhbe! 😞`
+      : "Iceberg ek asamanya baktir jonno patro likhbe! 😞",
+    result.name
+      ? `${result.name}, Titanic-er pani tomar jonno thanda chilo na? 😔`
+      : "Ek asamanya bakti, Titanic-er thanda pani te dublo! 😔",
+  ];
+
+  // Randomly select a message
+  const randomMessage = isSurvived
+    ? survivalMessages[Math.floor(Math.random() * survivalMessages.length)]
+    : nonSurvivalMessages[
+        Math.floor(Math.random() * nonSurvivalMessages.length)
+      ];
 
   // Animation variants for the card
   const cardVariants = {
-    hidden: { opacity: 0, scale: isSurvived ? 0.8 : 1, y: isSurvived ? 0 : 50 },
+    hidden: { opacity: 0, scale: isSurvived ? 0.7 : 1, y: isSurvived ? 0 : 60 },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+        type: "spring",
+        stiffness: 100,
+      },
     },
   };
 
-  // Animation for confetti (survived case)
-  const confettiVariants = {
-    hidden: { opacity: 0, y: -50 },
+  // Animation for image
+  const imageVariants = {
+    hidden: { scale: 0, rotate: isSurvived ? -20 : 0 },
     visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, staggerChildren: 0.1 },
-    },
-  };
-
-  const confettiParticle = {
-    hidden: { opacity: 0, x: Math.random() * 100 - 50, y: Math.random() * 100 },
-    visible: {
-      opacity: [1, 0],
-      x: Math.random() * 200 - 100,
-      y: Math.random() * 200 + 50,
-      transition: { duration: 1.5, ease: "easeOut" },
+      scale: 1,
+      rotate: 0,
+      transition: { delay: 0.3, type: "spring", stiffness: 150, damping: 10 },
     },
   };
 
   return (
-    <div className="max-w-md mx-auto mt-24 p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 text-center relative overflow-hidden">
+    <div className="max-w-md mx-auto mt-16 p-8 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 text-center relative overflow-hidden">
       {/* Confetti effect for survivors */}
-      {isSurvived && (
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          variants={confettiVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-2 h-2 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full absolute"
-              style={{ top: "10%", left: `${Math.random() * 100}%` }}
-              variants={confettiParticle}
-            />
-          ))}
-        </motion.div>
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={500}
+          recycle={false}
+          colors={[
+            "#ec4899",
+            "#d946ef",
+            "#8b5cf6",
+            "#4ade80",
+            "#facc15",
+            "#f87171",
+            "#60a5fa",
+            "#f472b6",
+          ]}
+          gravity={0.35}
+          initialVelocityY={50}
+          initialVelocityX={{ min: -30, max: 30 }}
+          tweenDuration={5000}
+          confettiSource={{
+            x: 0,
+            y: 0,
+            w: window.innerWidth,
+            h: 0,
+          }}
+        />
       )}
 
       <motion.div
         variants={cardVariants}
         initial="hidden"
         animate="visible"
-        className={`p-6 rounded-xl ${
+        className={`p-8 rounded-2xl ${
           isSurvived
-            ? "bg-gradient-to-br from-pink-500/20 to-purple-600/20"
-            : "bg-gradient-to-br from-gray-800/20 to-black/50 border border-gray-500/50"
+            ? "bg-gradient-to-br from-pink-500/30 to-purple-600/30 shadow-lg shadow-pink-500/20"
+            : "bg-gradient-to-br from-gray-900/50 to-black/70 border border-gray-600/50"
         }`}
       >
         {/* Image */}
@@ -80,10 +130,8 @@ const ResultCard = ({ result }) => {
           <motion.img
             src={result.image}
             alt={result.name || "Passenger"}
-            className="w-40 h-40 rounded-full object-cover mx-auto mb-4 border-2 border-white/30 shadow-lg"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 120 }}
+            className="w-48 h-48 rounded-full object-cover mx-auto mb-6 border-4 border-white/40 shadow-xl"
+            variants={imageVariants}
             onError={(e) => {
               e.target.style.display = "none";
               console.error("Failed to load image");
@@ -92,7 +140,7 @@ const ResultCard = ({ result }) => {
         )}
 
         {/* Name */}
-        <h2 className="text-white text-2xl font-bold mb-2">
+        <h2 className="text-white text-3xl font-extrabold mb-3 tracking-tight">
           {result.name || "Unknown Passenger"}
         </h2>
 
@@ -100,32 +148,26 @@ const ResultCard = ({ result }) => {
         {isSurvived ? (
           <>
             <motion.h3
-              className="text-green-400 text-xl font-semibold mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              className="text-green-400 text-2xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
             >
               Survived! 🎉
             </motion.h3>
-            <p className="text-white/80 text-lg">
-              Tumi borolok, taka ache, tai beche gecho! 🚢
-            </p>
+            <p className="text-white/90 text-lg font-medium">{randomMessage}</p>
           </>
         ) : (
           <>
             <motion.h3
-              className="text-red-500 text-xl font-semibold mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              className="text-red-500 text-2xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
             >
               RIP 😔
             </motion.h3>
-            <p className="text-white/80 text-lg">
-              {result.name
-                ? `${result.name}, Titanic-er iceberg tomar kotha mone rakhbe.`
-                : "Titanic-er iceberg ekti asamanya baktir kotha mone rakhbe."}
-            </p>
+            <p className="text-white/90 text-lg font-medium">{randomMessage}</p>
           </>
         )}
       </motion.div>
