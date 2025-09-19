@@ -29,21 +29,17 @@ const ResultCard = ({ result }) => {
   // Arrays of varied survival and non-survival messages
   const survivalMessages = [
     "Titanic sank… but your story’s still floating!🚢",
-    "Titanic went under, but you’re still on top! 😂 🎉",
+    "Titanic went under, but you’re still on top! 😂",
     "The iceberg froze the ship, but not your luck!🛳️",
     "Titanic sank, but you didn’t go down with it! 😎",
-    "Titanic’s gone… but your ego stayed afloat! 🌊",
+    "Titanic’s gone… but your ego stayed afloat! 🌊",
   ];
 
   const nonSurvivalMessages = [
     "Titanic said: Nice try, but swimming lessons next time!😅",
-
     "You sank faster than the Wi-Fi on the Titanic!🚢",
-
     "Even Jack had more screen time than you!🚢",
-
     "Titanic survived longer than you did!😬",
-
     "Even the iceberg felt sorry for you!😂 ",
   ];
 
@@ -87,7 +83,7 @@ const ResultCard = ({ result }) => {
       ? `I survived the Titanic! 🎉 ${randomMessage}`
       : `RIP 😔 ${randomMessage}`;
     const shareData = {
-      title: "Titanic Survival Challange",
+      title: "Titanic Survival Challenge",
       text: shareText,
       url: window.location.href,
     };
@@ -101,7 +97,6 @@ const ResultCard = ({ result }) => {
         toast.error("Sharing failed. Try the fallback option.");
       }
     } else {
-      // Fallback: Open share links in new tabs
       const encodedText = encodeURIComponent(shareText);
       const shareUrls = {
         x: `https://x.com/intent/tweet?text=${encodedText}&url=${encodeURIComponent(
@@ -122,6 +117,7 @@ const ResultCard = ({ result }) => {
     }
   };
 
+  // Download card as PNG
   // Download card as PNG
   const handleDownload = () => {
     if (!cardRef.current) {
@@ -159,7 +155,7 @@ const ResultCard = ({ result }) => {
     // Set high DPI scaling
     ctx.scale(scale, scale);
 
-    // Step 1: Draw inner card background gradient with restored vibrant colors
+    // Step 1: Draw inner card background gradient
     let innerGradient;
     if (isSurvived) {
       innerGradient = ctx.createLinearGradient(0, 0, 0, innerHeight);
@@ -184,11 +180,11 @@ const ResultCard = ({ result }) => {
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 10;
     } else {
-      ctx.shadowColor = "rgba(75, 85, 99, 0.6)"; // gray-600/60
+      ctx.shadowColor = "rgba(75, 85, 99, 0.6)";
       ctx.shadowBlur = 20;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 10;
-      ctx.strokeStyle = "rgba(75, 85, 99, 0.6)"; // border-gray-600/60
+      ctx.strokeStyle = "rgba(75, 85, 99, 0.6)";
       ctx.lineWidth = borderWidth;
       ctx.rect(
         halfBorder,
@@ -203,6 +199,7 @@ const ResultCard = ({ result }) => {
     ctx.restore();
 
     // Step 3: Calculate content height for vertical centering
+    const innerPadding = 24; // Matches p-6 (1.5rem = 24px)
     const imgSize = result.image ? 160 : 0;
     const imgMargin = result.image ? 16 : 0;
     const nameHeight = 30;
@@ -210,9 +207,8 @@ const ResultCard = ({ result }) => {
     const statusHeight = 24;
     const statusMargin = 12;
     const messageLineHeight = 20;
-    const messageLines =
-      Math.ceil(ctx.measureText(randomMessage).width / (innerWidth - 48)) || 1;
-    const messageHeight = messageLineHeight * Math.min(messageLines, 2);
+    const maxLines = 3; // Maximum 3 lines for message
+    const messageHeight = messageLineHeight * maxLines;
     const totalContentHeight =
       imgSize +
       imgMargin +
@@ -222,11 +218,8 @@ const ResultCard = ({ result }) => {
       statusMargin +
       messageHeight;
 
-    // Calculate starting Y to center content vertically in inner card
-    const innerPadding = 24; // Matches p-6 (padding: 1.5rem = 24px)
     const availableHeight = innerHeight - 2 * innerPadding;
     const startY = innerPadding + (availableHeight - totalContentHeight) / 2;
-
     let currentY = startY;
 
     // Step 4: Load and draw image if present
@@ -234,7 +227,6 @@ const ResultCard = ({ result }) => {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload = () => {
-        // Draw circular image
         const imgX = (innerWidth - imgSize) / 2;
         const imgY = currentY;
 
@@ -298,47 +290,107 @@ const ResultCard = ({ result }) => {
 
     // Helper to draw text content
     function drawTextContent() {
-      // Draw name
+      const maxWidth = innerWidth - 2 * innerPadding; // 24px padding on each side
+      const maxLines = 3; // Maximum 3 lines for message
+      let lineCount = 0;
+
+      // Draw name with wrapping
       ctx.font = "800 30px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = "#FFFFFF";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
-      ctx.fillText(
-        result.name || "Unknown Passenger",
-        innerWidth / 2,
-        currentY
-      );
+      const nameText = isSurvived
+        ? `Congratulations, ${result.name || "Unknown Passenger"}!`
+        : `Sorry, ${result.name || "Unknown Passenger"}`;
+      const nameWords = nameText.split(" ");
+      let nameLine = "";
+      nameWords.forEach((word, index) => {
+        if (lineCount >= maxLines) return;
+        const testLine = nameLine + word + " ";
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && nameLine !== "") {
+          if (lineCount === maxLines - 1) {
+            ctx.fillText(nameLine.trim() + "...", innerWidth / 2, currentY);
+            lineCount++;
+            return;
+          }
+          ctx.fillText(nameLine.trim(), innerWidth / 2, currentY);
+          nameLine = word + " ";
+          currentY += nameHeight;
+          lineCount++;
+        } else {
+          nameLine = testLine;
+        }
+      });
+      if (lineCount < maxLines && nameLine.trim()) {
+        ctx.fillText(nameLine.trim(), innerWidth / 2, currentY);
+      }
       currentY += nameHeight + nameMargin;
 
       // Draw status
-      ctx.font = "700 24px system-ui, -apple-system, sans-serif";
-      ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444"; // green-400 or red-500
-      ctx.fillText(
-        isSurvived ? "Survived! 🎉" : "RIP 😔",
-        innerWidth / 2,
-        currentY
-      );
+      ctx.font = "700 20px system-ui, -apple-system, sans-serif";
+      ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+
+      const statusText = isSurvived
+        ? "You survived the sinking of the Titanic! 🎉"
+        : "Rest In Peace 😔";
+
+      const statusWords = statusText.split(" ");
+      let statusLine = "";
+      let statusLineCount = 0;
+
+      statusWords.forEach((word) => {
+        if (statusLineCount >= maxLines) return;
+        const testLine = statusLine + word + " ";
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && statusLine !== "") {
+          if (statusLineCount === maxLines - 1) {
+            ctx.fillText(statusLine.trim() + "...", innerWidth / 2, currentY);
+            statusLineCount++;
+            return;
+          }
+          ctx.fillText(statusLine.trim(), innerWidth / 2, currentY);
+          statusLine = word + " ";
+          currentY += statusHeight;
+          statusLineCount++;
+        } else {
+          statusLine = testLine;
+        }
+      });
+
+      if (statusLineCount < maxLines && statusLine.trim()) {
+        ctx.fillText(statusLine.trim(), innerWidth / 2, currentY);
+      }
       currentY += statusHeight + statusMargin;
 
-      // Draw message
+      // Draw message with wrapping and overflow handling
       ctx.font = "500 16px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-      const maxWidth = innerWidth - 48;
       const words = randomMessage.split(" ");
       let line = "";
-      const lineHeight = messageLineHeight;
-      words.forEach((word) => {
+      words.forEach((word, index) => {
+        if (lineCount >= maxLines) return;
         const testLine = line + word + " ";
         const metrics = ctx.measureText(testLine);
         if (metrics.width > maxWidth && line !== "") {
+          if (lineCount === maxLines - 1) {
+            ctx.fillText(line.trim() + "...", innerWidth / 2, currentY);
+            lineCount++;
+            return;
+          }
           ctx.fillText(line.trim(), innerWidth / 2, currentY);
           line = word + " ";
-          currentY += lineHeight;
+          currentY += messageLineHeight;
+          lineCount++;
         } else {
           line = testLine;
         }
       });
-      ctx.fillText(line.trim(), innerWidth / 2, currentY);
+      if (lineCount < maxLines && line.trim()) {
+        ctx.fillText(line.trim(), innerWidth / 2, currentY);
+      }
 
       // Finalize download
       finalizeDownload();
@@ -420,20 +472,22 @@ const ResultCard = ({ result }) => {
         )}
 
         {/* Name */}
-        <h2 className="text-white text-2xl md:text-4xl font-extrabold mb-2 tracking-tight">
-          {result.name || "Unknown Passenger"}
+        <h2 className="text-white text-xl md:text-3xl font-extrabold mb-2 tracking-tight">
+          {isSurvived
+            ? `Congratulations, ${result.name || "Unknown Passenger"}!`
+            : `Sorry, ${result.name || "Unknown Passenger"}`}
         </h2>
 
         {/* Survival Status and Message */}
         {isSurvived ? (
           <>
             <motion.h3
-              className="text-green-400 text-xl md:text-2xl font-bold mb-2 md:mb-3"
+              className="text-green-400 text-lg md:text-xl font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              Survived! 🎉
+              You survived the sinking of the Titanic! 🎉
             </motion.h3>
             <p className="text-white/90 text-base md:text-lg font-medium">
               {randomMessage}
@@ -442,12 +496,12 @@ const ResultCard = ({ result }) => {
         ) : (
           <>
             <motion.h3
-              className="text-red-500 text-lg md:text-xl font-bold mb-2 md:mb-3"
+              className="text-red-500 text-base md:text-lg font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              RIP
+              Rest In Peace 😔
             </motion.h3>
             <p className="text-white/90 text-sm md:text-md font-medium">
               {randomMessage}
