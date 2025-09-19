@@ -28,11 +28,11 @@ const ResultCard = ({ result }) => {
 
   // Arrays of varied survival and non-survival messages
   const survivalMessages = [
-    "Tumi borolok, taka ache, tai beche gecho! 🚢",
-    "Aha! Tumi to Titanic-er hero, beche gecho! 🎉",
-    "Tumi jhorer mawkhomukhi, beche gecho! 🛳️",
-    "Taka na thakleo, tumi luck diye beche gecho! 😎",
-    "Titanic bolche, tumi ekta legend, beche gecho! 🌟",
+    "Titanic sank… but your story’s still floating!🚢",
+    "Titanic went under, but you’re still on top! 😂 🎉",
+    "The iceberg froze the ship, but not your luck!🛳️",
+    "Titanic sank, but you didn’t go down with it! 😎",
+    "Titanic’s gone… but your ego stayed afloat! 🌊",
   ];
 
   const nonSurvivalMessages = [
@@ -93,7 +93,7 @@ const ResultCard = ({ result }) => {
       ? `I survived the Titanic! 🎉 ${randomMessage}`
       : `RIP 😔 ${randomMessage}`;
     const shareData = {
-      title: "Titanic Survival Prediction",
+      title: "Titanic Survival Challange",
       text: shareText,
       url: window.location.href,
     };
@@ -363,7 +363,7 @@ const ResultCard = ({ result }) => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      toast.success(`Downloaded: ${filename}`, { id: "download" });
+      toast.success(`Card generated successfully`, { id: "download" });
       console.log("Download triggered successfully:", filename);
     }
   };
