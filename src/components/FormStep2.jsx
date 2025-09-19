@@ -90,7 +90,7 @@ const FormStep2 = ({ onNext }) => {
                 name="pclass"
                 value={form.pclass}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg border border-purple-500 text-sm md:text-base text-black"
+                className="w-full p-2 rounded-lg border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base text-black"
               >
                 <option value="">Select Class</option>
                 <option value={1}>1st Class</option>
@@ -108,7 +108,7 @@ const FormStep2 = ({ onNext }) => {
                 name="sex"
                 value={form.sex}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
               >
                 <option value="">Select Sex</option>
                 <option value={0}>Male</option>
@@ -124,10 +124,10 @@ const FormStep2 = ({ onNext }) => {
               <input
                 type="number"
                 name="age"
-                // placeholder="Enter Age"
+                placeholder="Enter Age"
                 value={form.age}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
               />
             </div>
 
@@ -139,10 +139,10 @@ const FormStep2 = ({ onNext }) => {
               <input
                 type="number"
                 name="sibsp"
-                // placeholder="Enter number"
+                placeholder="Enter number"
                 value={form.sibsp}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
               />
             </div>
           </>
@@ -158,10 +158,10 @@ const FormStep2 = ({ onNext }) => {
               <input
                 type="number"
                 name="parch"
-                // placeholder="Enter number"
+                placeholder="Enter number"
                 value={form.parch}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
               />
             </div>
 
@@ -173,10 +173,10 @@ const FormStep2 = ({ onNext }) => {
               <input
                 type="number"
                 name="fare"
-                // placeholder="Enter Fare"
+                placeholder="Enter Fare"
                 value={form.fare}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
               />
             </div>
 
@@ -189,7 +189,7 @@ const FormStep2 = ({ onNext }) => {
                 name="embarked"
                 value={form.embarked}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
               >
                 <option value="">Select Port</option>
                 <option value={0}>Cherbourg (C)</option>
