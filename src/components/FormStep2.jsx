@@ -63,32 +63,34 @@ const FormStep2 = ({ onNext }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-24 p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg">
-      <h2 className="text-white text-2xl font-bold mb-3 text-center">
-        Passenger Info for Prediction
+    <div className="max-w-4xl mx-auto mt-6 md:mt-24 p-4 md:p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg w-[90%]">
+      <h2 className="text-white text-2xl md:text-3xl font-bold mb-1 md:mb-3 text-center">
+        Hold on{" "}
       </h2>
-
+      <p className="text-white/90 text-xs mb-2 md:mb-4 text-center">
+        You’ll be able to jump soon!
+      </p>
       {/* Progress Bar */}
-      <div className="w-full bg-white/20 h-2 rounded-full mb-6">
+      <div className="w-full bg-white/20 h-2 rounded-full mb-4 md:mb-6">
         <div
           className="h-2 rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 transition-all duration-500"
           style={{ width: step === 1 ? "50%" : "100%" }}
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
         {step === 1 && (
           <>
             {/* Class */}
             <div>
-              <label className="text-white font-semibold block mb-1">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
                 Class
               </label>
               <select
                 name="pclass"
                 value={form.pclass}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg border border-purple-500 text-sm md:text-base text-black"
               >
                 <option value="">Select Class</option>
                 <option value={1}>1st Class</option>
@@ -99,12 +101,14 @@ const FormStep2 = ({ onNext }) => {
 
             {/* Sex */}
             <div>
-              <label className="text-white font-semibold block mb-1">Sex</label>
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+                Sex
+              </label>
               <select
                 name="sex"
                 value={form.sex}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
               >
                 <option value="">Select Sex</option>
                 <option value={0}>Male</option>
@@ -114,29 +118,31 @@ const FormStep2 = ({ onNext }) => {
 
             {/* Age */}
             <div>
-              <label className="text-white font-semibold block mb-1">Age</label>
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+                Age
+              </label>
               <input
                 type="number"
                 name="age"
-                placeholder="Enter Age"
+                // placeholder="Enter Age"
                 value={form.age}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
               />
             </div>
 
             {/* Siblings/Spouses */}
             <div>
-              <label className="text-white font-semibold block mb-1">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
                 Siblings/Spouses aboard
               </label>
               <input
                 type="number"
                 name="sibsp"
-                placeholder="Enter number"
+                // placeholder="Enter number"
                 value={form.sibsp}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
               />
             </div>
           </>
@@ -146,44 +152,44 @@ const FormStep2 = ({ onNext }) => {
           <>
             {/* Parents/Children */}
             <div>
-              <label className="text-white font-semibold block mb-1">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
                 Parents/Children aboard
               </label>
               <input
                 type="number"
                 name="parch"
-                placeholder="Enter number"
+                // placeholder="Enter number"
                 value={form.parch}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
               />
             </div>
 
             {/* Fare */}
             <div>
-              <label className="text-white font-semibold block mb-1">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
                 Fare
               </label>
               <input
                 type="number"
                 name="fare"
-                placeholder="Enter Fare"
+                // placeholder="Enter Fare"
                 value={form.fare}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
               />
             </div>
 
             {/* Embarked */}
             <div>
-              <label className="text-white font-semibold block mb-1">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
                 Port of Embarkation
               </label>
               <select
                 name="embarked"
                 value={form.embarked}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500"
+                className="w-full p-2 rounded-lg text-black border border-purple-500 text-sm md:text-base"
               >
                 <option value="">Select Port</option>
                 <option value={0}>Cherbourg (C)</option>
@@ -196,11 +202,11 @@ const FormStep2 = ({ onNext }) => {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between mt-4 md:mt-6">
         {step === 2 && (
           <button
             onClick={handlePrev}
-            className="px-6 py-2 bg-gradient-to-r from-purple-500 via-fuchsia-600 to-pink-500 text-white rounded-full font-bold shadow-lg"
+            className="px-4 py-2 md:px-6 md:py-2 bg-gradient-to-r from-purple-500 via-fuchsia-600 to-pink-500 text-white rounded-full font-bold shadow-lg text-xs md:text-base"
           >
             Previous
           </button>
@@ -208,7 +214,7 @@ const FormStep2 = ({ onNext }) => {
 
         <button
           onClick={handleNext}
-          className="px-6 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg ml-auto"
+          className="px-5 py-2 md:px-6 md:py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg ml-auto text-xs md:text-base"
         >
           {step === 1 ? "Next Step" : "Submit"}
         </button>
