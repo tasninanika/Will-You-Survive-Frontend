@@ -59,7 +59,7 @@ const ResultCard = ({ result }) => {
     const selectedMessage =
       messageArray[Math.floor(Math.random() * messageArray.length)];
     setRandomMessage(selectedMessage);
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
   // Animation variants for the card
   const cardVariants = {
@@ -119,7 +119,9 @@ const ResultCard = ({ result }) => {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
           window.location.href
         )}&quote=${encodedText}`,
-        instagram: `https://www.instagram.com/?caption=${encodedText}%20${encodedUrl}`,
+        instagram: `https://www.instagram.com/?caption=${encodedText}%20${encodeURIComponent(
+          window.location.href
+        )}`,
       };
       window.open(shareUrls.x, "_blank");
       toast.success("Opened X for sharing!");
@@ -143,7 +145,7 @@ const ResultCard = ({ result }) => {
     const outerRect = cardRef.current.parentElement.getBoundingClientRect();
     const outerWidth = outerRect.width;
     const outerHeight = outerRect.height;
-    const scale = 2;
+    const scale = 2; // High DPI scaling
     const canvasWidth = outerWidth * scale;
     const canvasHeight = outerHeight * scale;
 
@@ -179,6 +181,10 @@ const ResultCard = ({ result }) => {
       ctx.closePath();
     };
 
+    // Adjust for crisp borders
+    const borderWidth = 0.5;
+    const halfBorder = borderWidth / 2;
+
     // Step 1: Draw outer card gradient
     const outerGradient = ctx.createLinearGradient(0, 0, 0, outerHeight);
     outerGradient.addColorStop(0, "rgba(0, 0, 0, 0.5)");
@@ -193,13 +199,20 @@ const ResultCard = ({ result }) => {
     ctx.shadowBlur = 24;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 12;
-    ctx.strokeStyle = "rgba(107, 114, 128, 0.3)"; // border-gray-500/30
-    ctx.lineWidth = 1;
     roundRect(0, 0, outerWidth, outerHeight, 24);
-    ctx.stroke();
-    ctx.fillStyle = "transparent";
     ctx.fill();
     ctx.restore();
+
+    ctx.strokeStyle = "rgba(107, 114, 128, 0.3)"; // border-gray-500/30
+    ctx.lineWidth = borderWidth;
+    roundRect(
+      halfBorder,
+      halfBorder,
+      outerWidth - borderWidth,
+      outerHeight - borderWidth,
+      24 - halfBorder
+    );
+    ctx.stroke();
 
     // Step 3: Draw inner card background gradient
     const outerPadding = 16;
@@ -207,52 +220,88 @@ const ResultCard = ({ result }) => {
     if (isSurvived) {
       innerGradient = ctx.createLinearGradient(
         outerPadding,
-        outerHeight - outerPadding,
-        innerWidth + outerPadding,
-        outerPadding
+        outerPadding,
+        outerPadding,
+        outerHeight - outerPadding
       );
-      innerGradient.addColorStop(0, "rgba(219, 39, 119, 0.5)");
-      innerGradient.addColorStop(1, "rgba(126, 34, 206, 0.5)");
+      innerGradient.addColorStop(0, "rgba(219, 39, 119, 0.5)"); // pink-600/50
+      innerGradient.addColorStop(1, "rgba(126, 34, 206, 0.5)"); // purple-700/50
     } else {
       innerGradient = ctx.createLinearGradient(
         outerPadding,
-        outerHeight - outerPadding,
-        innerWidth + outerPadding,
-        outerPadding
+        outerPadding,
+        outerPadding,
+        outerHeight - outerPadding
       );
-      innerGradient.addColorStop(0, "rgba(17, 24, 39, 0.7)");
-      innerGradient.addColorStop(1, "rgba(0, 0, 0, 0.9)");
+      innerGradient.addColorStop(0, "rgba(17, 24, 39, 0.7)"); // gray-900/70
+      innerGradient.addColorStop(1, "rgba(0, 0, 0, 0.9)"); // black/90
     }
     ctx.fillStyle = innerGradient;
     roundRect(outerPadding, outerPadding, innerWidth, innerHeight, 16);
     ctx.fill();
 
-    // Step 4: Draw inner card shadow
+    // Step 4: Draw inner card shadow and border
     ctx.save();
-    ctx.shadowColor = isSurvived
-      ? "rgba(236, 72, 153, 0.2)"
-      : "rgba(75, 85, 99, 0.5)";
-    ctx.shadowBlur = 20;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 10;
-    ctx.fillStyle = "transparent";
-    if (!isSurvived) {
-      ctx.strokeStyle = "rgba(75, 85, 99, 0.5)";
-      ctx.lineWidth = 1;
-      roundRect(outerPadding, outerPadding, innerWidth, innerHeight, 16);
+    if (isSurvived) {
+      ctx.shadowColor = "rgba(236, 72, 153, 0.2)"; // pink-500/20
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 10;
+    } else {
+      ctx.shadowColor = "rgba(75, 85, 99, 0.5)"; // gray-600/50
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 10;
+      ctx.strokeStyle = "rgba(75, 85, 99, 0.5)"; // border-gray-600/50
+      ctx.lineWidth = borderWidth;
+      roundRect(
+        outerPadding + halfBorder,
+        outerPadding + halfBorder,
+        innerWidth - borderWidth,
+        innerHeight - borderWidth,
+        16 - halfBorder
+      );
       ctx.stroke();
     }
+    ctx.fillStyle = "transparent";
     ctx.fill();
     ctx.restore();
 
-    // Step 5: Load and draw image if present
-    let currentY = outerPadding + 24;
+    // Step 5: Calculate content height for vertical centering
+    const imgSize = result.image ? 160 : 0;
+    const imgMargin = result.image ? 16 : 0;
+    const nameHeight = 30;
+    const nameMargin = 8;
+    const statusHeight = 24;
+    const statusMargin = 12;
+    // Estimate message height (assuming up to 2 lines for simplicity)
+    const messageLineHeight = 20;
+    const messageLines =
+      Math.ceil(ctx.measureText(randomMessage).width / (innerWidth - 48)) || 1;
+    const messageHeight = messageLineHeight * Math.min(messageLines, 2);
+    const totalContentHeight =
+      imgSize +
+      imgMargin +
+      nameHeight +
+      nameMargin +
+      statusHeight +
+      statusMargin +
+      messageHeight;
+
+    // Calculate starting Y to center content vertically in inner card
+    const innerPadding = 24; // Matches p-6 (padding: 1.5rem = 24px)
+    const availableHeight = innerHeight - 2 * innerPadding;
+    const startY =
+      outerPadding + innerPadding + (availableHeight - totalContentHeight) / 2;
+
+    let currentY = startY;
+
+    // Step 6: Load and draw image if present
     if (result.image) {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload = () => {
         // Draw circular image
-        const imgSize = 160;
         const imgX = outerPadding + (innerWidth - imgSize) / 2;
         const imgY = currentY;
 
@@ -301,12 +350,12 @@ const ResultCard = ({ result }) => {
         ctx.fill();
         ctx.restore();
 
-        currentY += imgSize + 16;
+        currentY += imgSize + imgMargin;
         drawTextContent();
       };
       img.onerror = () => {
         console.error("Failed to load image for canvas:", result.image);
-        currentY += 160 + 16;
+        currentY += imgSize + imgMargin;
         drawTextContent();
       };
       img.src = result.image;
@@ -326,17 +375,17 @@ const ResultCard = ({ result }) => {
         outerPadding + innerWidth / 2,
         currentY
       );
-      currentY += 30 + 8;
+      currentY += nameHeight + nameMargin;
 
       // Draw status
       ctx.font = "700 24px system-ui, -apple-system, sans-serif";
-      ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444";
+      ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444"; // green-400 or red-500
       ctx.fillText(
         isSurvived ? "Survived! 🎉" : "RIP 😔",
         outerPadding + innerWidth / 2,
         currentY
       );
-      currentY += 24 + 12;
+      currentY += statusHeight + statusMargin;
 
       // Draw message
       ctx.font = "500 16px system-ui, -apple-system, sans-serif";
@@ -344,7 +393,7 @@ const ResultCard = ({ result }) => {
       const maxWidth = innerWidth - 48;
       const words = randomMessage.split(" ");
       let line = "";
-      let lineHeight = 20;
+      const lineHeight = messageLineHeight;
       words.forEach((word) => {
         const testLine = line + word + " ";
         const metrics = ctx.measureText(testLine);
