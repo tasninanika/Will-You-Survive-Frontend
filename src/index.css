@@ -1,2 +1,19 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+h1{
+    font-family: "IM Fell English", serif;
+}
+h2{
+    font-family: "IM Fell English", serif;
+}
+p{
+    font-family: "Crimson Text", serif;
+}
+
+.font-crimson{
+    font-family: "Crimson Text", serif;
+}

@@ -70,7 +70,7 @@ const TypingText = ({ text, speed = 50, onComplete }) => {
     return () => clearInterval(interval);
   }, [text, speed, onComplete, finished]);
 
-  return <p className="text-white/85 mt-4 text-sm font-mono">{displayed}</p>;
+  return <p className="text-white/85 mt-4 text-base font-mono">{displayed}</p>;
 };
 
 const HomePage = () => {
@@ -216,7 +216,7 @@ const HomePage = () => {
                 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="mt-4 px-6 py-2 rounded-full font-bold bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white shadow-lg"
+                className="mt-4 px-6 py-2 rounded-full font-bold bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white shadow-lg font-crimson"
               >
                 Yes! I'm Ready
               </motion.button>
