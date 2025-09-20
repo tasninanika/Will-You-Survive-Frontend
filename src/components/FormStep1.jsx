@@ -50,7 +50,7 @@ const FormStep1 = ({ onNext }) => {
       <p className="text-white text-xs md:text-sm mb-4 md:mb-4">
         Say who you are first, so history remembers you!
       </p>
-      <div className="space-y-4 md:space-y-6">
+      <div className="space-y-4 md:space-y-3">
         <div>
           <label className="text-white font-semibold block mb-2 text-left font-crimson">
             Name
@@ -81,13 +81,13 @@ const FormStep1 = ({ onNext }) => {
             <img
               src={image}
               alt="Preview"
-              className="w-24 h-24 md:w-24 md:h-24 rounded-full object-cover border-2 border-white/20 shadow-lg"
+              className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-white/20 shadow-lg"
             />
           </div>
         )}
         <button
           onClick={handleNext}
-          className="md:w-full md:py-3 md:px-6 px-4 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-3xl font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson ml-auto block text-xs md:text-base"
+          className=" md:py-3 md:px-6 px-4 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-3xl font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson ml-auto block text-xs md:text-base"
         >
           Next
         </button>
