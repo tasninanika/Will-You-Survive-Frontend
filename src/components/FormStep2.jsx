@@ -206,7 +206,7 @@ const FormStep2 = ({ onNext }) => {
         {step === 2 && (
           <button
             onClick={handlePrev}
-            className="px-4 py-2 md:px-6 md:py-2 bg-gradient-to-r from-purple-500 via-fuchsia-600 to-pink-500 text-white rounded-full font-bold shadow-lg text-xs md:text-base"
+            className="btn border-none px-4 py-2 md:px-6 md:py-2 bg-gradient-to-r from-purple-500 via-fuchsia-600 to-pink-500 text-white rounded-full font-bold shadow-lg text-xs md:text-base"
           >
             Previous
           </button>
@@ -214,7 +214,7 @@ const FormStep2 = ({ onNext }) => {
 
         <button
           onClick={handleNext}
-          className="px-5 py-2 md:px-6 md:py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg ml-auto text-xs md:text-base"
+          className="btn border-none px-5 py-2 md:px-6 md:py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-full font-bold shadow-lg ml-auto text-xs md:text-base"
         >
           {step === 1 ? "Next Step" : "Submit"}
         </button>
