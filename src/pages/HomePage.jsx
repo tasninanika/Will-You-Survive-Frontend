@@ -164,7 +164,7 @@ const HomePage = () => {
     } catch (err) {
       console.error("Fetch error:", err);
       setIsLoading(false);
-      toast.error(`Prediction failed: ${err.message}`);
+      toast.error("Opps! Something went wrong");
     }
   };
 
@@ -309,9 +309,9 @@ const HomePage = () => {
             animate="visible"
           >
             <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h3 className="text-white  md:text-xl font-bold">
+              <h2 className="text-white  md:text-xl font-bold">
                 🚤 Survive first, panic later!
-              </h3>
+              </h2>
               <TypingText text="The iceberg won't wait for anyone. 😏" />
               <div className="md:mt-4 mt-2">
                 <button
