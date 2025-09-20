@@ -81,7 +81,7 @@ const FormStep1 = ({ onNext }) => {
             <img
               src={image}
               alt="Preview"
-              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-2 border-white/20 shadow-lg"
+              className="w-24 h-24 md:w-24 md:h-24 rounded-full object-cover border-2 border-white/20 shadow-lg"
             />
           </div>
         )}
