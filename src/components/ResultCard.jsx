@@ -481,14 +481,14 @@ const ResultCard = ({ result }) => {
         {/* Survival Status and Message */}
         {isSurvived ? (
           <>
-            <motion.h3
-              className="text-green-400 text-lg md:text-xl font-bold mb-2 md:mb-3"
+            <motion.p
+              className="text-green-400 text-4xl md:text-xl font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              You survived the sinking of the Titanic! 🎉
-            </motion.h3>
+              You survived the sinking of the Titanic!🎉
+            </motion.p>
             <p className="text-white/90 text-base md:text-lg font-medium">
               {randomMessage}
             </p>
