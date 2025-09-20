@@ -136,9 +136,9 @@ const ResultCard = ({ result }) => {
     const innerWidth = innerRect.width;
     const innerHeight = innerRect.height;
     const scale = 2;
-    const heightOffset = 200;
+    const heightOffset = 200; // Add 200px to the canvas height (adjust as needed)
     const canvasWidth = innerWidth * scale;
-    const canvasHeight = (innerHeight + heightOffset) * scale;
+    const canvasHeight = (innerHeight + heightOffset) * scale; // Modified to increase height
 
     // Create canvas
     const canvas = document.createElement("canvas");
@@ -164,16 +164,21 @@ const ResultCard = ({ result }) => {
         0,
         0,
         innerHeight + heightOffset
-      );
+      ); // Update gradient height
       innerGradient.addColorStop(0, "rgb(219, 39, 119)"); // pink-600
       innerGradient.addColorStop(1, "rgb(126, 34, 206)"); // purple-700
     } else {
-      innerGradient = ctx.createLinearGradient(0, 0, 0, innerHeight);
+      innerGradient = ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        innerHeight + heightOffset
+      ); // Update gradient height
       innerGradient.addColorStop(0, "rgb(17, 24, 39)");
       innerGradient.addColorStop(1, "rgb(0, 0, 0)");
     }
     ctx.fillStyle = innerGradient;
-    ctx.rect(0, 0, innerWidth, innerHeight + heightOffset);
+    ctx.rect(0, 0, innerWidth, innerHeight + heightOffset); // Update rect height
     ctx.fill();
 
     // Step 2: Draw inner card shadow and border
@@ -196,7 +201,7 @@ const ResultCard = ({ result }) => {
         halfBorder,
         halfBorder,
         innerWidth - borderWidth,
-        innerHeight + heightOffset - borderWidth
+        innerHeight + heightOffset - borderWidth // Update rect height
       );
       ctx.stroke();
     }
@@ -208,7 +213,7 @@ const ResultCard = ({ result }) => {
     const innerPadding = 24; // Matches p-6 (1.5rem = 24px)
     const imgSize = result.image ? 160 : 0;
     const imgMargin = result.image ? 16 : 0;
-    const nameHeight = 40;
+    const nameHeight = 30;
     const nameMargin = 8;
     const statusHeight = 24;
     const statusMargin = 12;
@@ -218,13 +223,13 @@ const ResultCard = ({ result }) => {
     const totalContentHeight =
       imgSize +
       imgMargin +
-      nameHeight * maxLines +
+      nameHeight +
       nameMargin +
       statusHeight +
       statusMargin +
       messageHeight;
 
-    const availableHeight = innerHeight + heightOffset - 2 * innerPadding;
+    const availableHeight = innerHeight + heightOffset - 2 * innerPadding; // Update available height
     const startY = innerPadding + (availableHeight - totalContentHeight) / 2;
     let currentY = startY;
 
@@ -297,11 +302,11 @@ const ResultCard = ({ result }) => {
     // Helper to draw text content
     function drawTextContent() {
       const maxWidth = innerWidth - 2 * innerPadding; // 24px padding on each side
-      const maxLines = 3; // Maximum 3 lines for name and message
+      const maxLines = 3; // Maximum 3 lines for message
       let lineCount = 0;
 
       // Draw name with wrapping
-      ctx.font = "800 28px system-ui, -apple-system, sans-serif"; // Slightly reduced font size to fit longer names
+      ctx.font = "800 30px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = "#FFFFFF";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
@@ -330,10 +335,8 @@ const ResultCard = ({ result }) => {
       });
       if (lineCount < maxLines && nameLine.trim()) {
         ctx.fillText(nameLine.trim(), innerWidth / 2, currentY);
-        lineCount++;
       }
-      currentY += nameHeight * (maxLines - lineCount); // Ensure space for remaining lines
-      currentY += nameMargin; // Add margin after name
+      currentY += nameHeight + nameMargin;
 
       // Draw status
       ctx.font = "700 20px system-ui, -apple-system, sans-serif";
@@ -371,14 +374,13 @@ const ResultCard = ({ result }) => {
       if (statusLineCount < maxLines && statusLine.trim()) {
         ctx.fillText(statusLine.trim(), innerWidth / 2, currentY);
       }
-      currentY += statusMargin; // Only add margin after status
+      currentY += statusHeight + statusMargin;
 
       // Draw message with wrapping and overflow handling
       ctx.font = "500 16px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
       const words = randomMessage.split(" ");
       let line = "";
-      lineCount = 0; // Reset line count for message
       words.forEach((word, index) => {
         if (lineCount >= maxLines) return;
         const testLine = line + word + " ";
