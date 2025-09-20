@@ -63,11 +63,11 @@ const FormStep2 = ({ onNext }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 md:mt-24 p-4 md:p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg w-[90%]">
-      <h2 className="text-white text-2xl md:text-3xl font-bold md:mb-3 text-center">
+    <div className="max-w-4xl mx-auto mt-10 md:mt-5 p-4 md:p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg w-[90%]">
+      <h2 className="text-white text-lg md:text-2xl font-bold md:mb-3 text-center">
         Hold on Buddy{" "}
       </h2>
-      <p className="text-white md:text-base text-xs mb-2 md:mb-4 text-center">
+      <p className="text-white md:text-sm text-xs mb-2 md:mb-4 text-center">
         You’ll be able to jump soon!
       </p>
       {/* Progress Bar */}

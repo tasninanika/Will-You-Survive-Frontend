@@ -231,7 +231,7 @@ const HomePage = () => {
         {/* Top Bubble */}
         {bubble1Visible && (
           <motion.div
-            className="absolute top-10 md:top-20 left-1/2 -translate-x-1/2 max-w-[600px]"
+            className="absolute top-10 md:top-20 left-1/2 -translate-x-1/2 md:max-w-[600px] min-w-[300px]"
             variants={bubbleVariants(0.3)}
             initial="hidden"
             animate="visible"
@@ -258,7 +258,7 @@ const HomePage = () => {
                 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="mt-4 px-6 py-2 rounded-full font-bold bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white shadow-lg font-crimson"
+                className="mt-4 px-6 py-2 rounded-full font-bold bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white shadow-lg font-crimson md:text-base text-sm"
               >
                 Yes! I'm Ready
               </motion.button>

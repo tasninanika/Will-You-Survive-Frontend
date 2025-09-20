@@ -43,14 +43,14 @@ const FormStep1 = ({ onNext }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-5 p-4 md:px-8 md:py-6 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20 w-[90%]">
+    <div className="max-w-md mx-auto mt-51 p-4 md:px-8 md:py-6 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20 w-[90%]">
       <h2 className="text-white text-lg md:text-2xl font-bold mb-2 md:mb-2 tracking-tight">
         Hey, why so hurry?{" "}
       </h2>
       <p className="text-white text-xs md:text-sm mb-4 md:mb-4">
         Say who you are first, so history remembers you!
       </p>
-      <div className="space-y-4 md:space-y-3">
+      <div className="space-y-2 md:space-y-2">
         <div>
           <label className="text-white font-semibold block mb-2 text-left font-crimson">
             Name
@@ -87,7 +87,7 @@ const FormStep1 = ({ onNext }) => {
         )}
         <button
           onClick={handleNext}
-          className=" md:py-3 md:px-6 px-4 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-3xl font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson ml-auto block text-xs md:text-base"
+          className=" md:py-3 md:px-8 px-4 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white rounded-3xl font-bold shadow-lg hover:scale-105 transition-transform duration-300 font-crimson ml-auto block text-xs md:text-base"
         >
           Next
         </button>
