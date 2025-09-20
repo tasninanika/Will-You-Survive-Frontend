@@ -297,16 +297,16 @@ const ResultCard = ({ result }) => {
     // Helper to draw text content
     function drawTextContent() {
       const maxWidth = innerWidth - 2 * innerPadding; // 24px padding on each side
-      const maxLines = 3; // Maximum 3 lines for message
+      const maxLines = 3; // Maximum 3 lines for name and message
       let lineCount = 0;
 
       // Draw name with wrapping
-      ctx.font = "800 30px system-ui, -apple-system, sans-serif";
+      ctx.font = "800 28px system-ui, -apple-system, sans-serif"; // Slightly reduced font size to fit longer names
       ctx.fillStyle = "#FFFFFF";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       const nameText = isSurvived
-        ? `Congratulations! ${result.name || "Unknown Passenger"}`
+        ? `Congratulations, ${result.name || "Unknown Passenger"}!`
         : `Sorry, ${result.name || "Unknown Passenger"}`;
       const nameWords = nameText.split(" ");
       let nameLine = "";
@@ -330,8 +330,10 @@ const ResultCard = ({ result }) => {
       });
       if (lineCount < maxLines && nameLine.trim()) {
         ctx.fillText(nameLine.trim(), innerWidth / 2, currentY);
+        lineCount++;
       }
-      currentY += nameHeight * lineCount + nameMargin;
+      currentY += nameHeight * (maxLines - lineCount); // Ensure space for remaining lines
+      currentY += nameMargin; // Add margin after name
 
       // Draw status
       ctx.font = "700 20px system-ui, -apple-system, sans-serif";
@@ -340,7 +342,7 @@ const ResultCard = ({ result }) => {
       ctx.textBaseline = "top";
 
       const statusText = isSurvived
-        ? "You survived the sinking of the Titanic!🎉"
+        ? "You survived the sinking of the Titanic! 🎉"
         : "Rest In Peace 😔";
 
       const statusWords = statusText.split(" ");
@@ -360,7 +362,6 @@ const ResultCard = ({ result }) => {
           ctx.fillText(statusLine.trim(), innerWidth / 2, currentY);
           statusLine = word + " ";
           currentY += statusHeight;
-          currentY += statusMargin;
           statusLineCount++;
         } else {
           statusLine = testLine;
@@ -370,13 +371,14 @@ const ResultCard = ({ result }) => {
       if (statusLineCount < maxLines && statusLine.trim()) {
         ctx.fillText(statusLine.trim(), innerWidth / 2, currentY);
       }
-      currentY += statusHeight + statusMargin;
+      currentY += statusMargin; // Only add margin after status
 
       // Draw message with wrapping and overflow handling
       ctx.font = "500 16px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
       const words = randomMessage.split(" ");
       let line = "";
+      lineCount = 0; // Reset line count for message
       words.forEach((word, index) => {
         if (lineCount >= maxLines) return;
         const testLine = line + word + " ";
