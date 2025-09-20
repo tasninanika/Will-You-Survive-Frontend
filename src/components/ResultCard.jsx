@@ -513,13 +513,13 @@ const ResultCard = ({ result }) => {
         <div className="mt-4 flex justify-center gap-2 md:gap-3">
           <button
             onClick={handleShare}
-            className="px-6 md:px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
+            className="btn border-none px-6 md:px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
           >
             Share
           </button>
           <button
             onClick={handleDownload}
-            className="px-3 md:px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
+            className="btn border-none px-3 md:px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
           >
             Download
           </button>
