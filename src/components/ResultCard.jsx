@@ -426,7 +426,7 @@ const ResultCard = ({ result }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 md:mt-10 p-4 md:p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden w-[90%]">
+    <div className="max-w-md mx-auto mt-8 md:mt-5 p-4 md:p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden w-[90%]">
       {/* Confetti effect for survivors */}
       {showConfetti && (
         <Confetti
