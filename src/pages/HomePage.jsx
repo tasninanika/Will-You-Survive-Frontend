@@ -141,11 +141,14 @@ const HomePage = () => {
     try {
       const { image, ...dataToSend } = { ...formData, ...formStep2Data };
       console.log("Data sent to backend:", dataToSend);
-      const res = await fetch("http://127.0.0.1:8000/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToSend),
-      });
+      const res = await fetch(
+        "https://will-you-survive-backend.onrender.com/predict",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       if (!res.ok) {
         const errorText = await res.text();
