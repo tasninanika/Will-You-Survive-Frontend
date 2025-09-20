@@ -306,7 +306,7 @@ const ResultCard = ({ result }) => {
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       const nameText = isSurvived
-        ? `Congratulations, ${result.name || "Unknown Passenger"}!`
+        ? `Congratulations! ${result.name || "Unknown Passenger"}`
         : `Sorry, ${result.name || "Unknown Passenger"}`;
       const nameWords = nameText.split(" ");
       let nameLine = "";
