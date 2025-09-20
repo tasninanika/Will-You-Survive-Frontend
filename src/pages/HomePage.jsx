@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import toast from "react-hot-toast";
