@@ -331,8 +331,8 @@ const ResultCard = ({ result }) => {
       if (lineCount < maxLines && nameLine.trim()) {
         ctx.fillText(nameLine.trim(), innerWidth / 2, currentY);
       }
-      currentY += nameHeight * lineCount + nameMargin;
-
+      currentY += nameHeight * (maxLines - lineCount);
+      currentY += nameMargin;
       // Draw status
       ctx.font = "700 20px system-ui, -apple-system, sans-serif";
       ctx.fillStyle = isSurvived ? "#10B981" : "#EF4444";
@@ -360,6 +360,7 @@ const ResultCard = ({ result }) => {
           ctx.fillText(statusLine.trim(), innerWidth / 2, currentY);
           statusLine = word + " ";
           currentY += statusHeight;
+          currentY += statusMargin;
           statusLineCount++;
         } else {
           statusLine = testLine;
