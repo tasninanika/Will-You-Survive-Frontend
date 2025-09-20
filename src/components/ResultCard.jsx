@@ -136,8 +136,9 @@ const ResultCard = ({ result }) => {
     const innerWidth = innerRect.width;
     const innerHeight = innerRect.height;
     const scale = 2;
+    const heightOffset = 200;
     const canvasWidth = innerWidth * scale;
-    const canvasHeight = innerHeight * scale;
+    const canvasHeight = (innerHeight + heightOffset) * scale;
 
     // Create canvas
     const canvas = document.createElement("canvas");
@@ -158,7 +159,12 @@ const ResultCard = ({ result }) => {
     // Step 1: Draw inner card background gradient
     let innerGradient;
     if (isSurvived) {
-      innerGradient = ctx.createLinearGradient(0, 0, 0, innerHeight);
+      innerGradient = ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        innerHeight + heightOffset
+      );
       innerGradient.addColorStop(0, "rgb(219, 39, 119)"); // pink-600
       innerGradient.addColorStop(1, "rgb(126, 34, 206)"); // purple-700
     } else {
@@ -167,7 +173,7 @@ const ResultCard = ({ result }) => {
       innerGradient.addColorStop(1, "rgb(0, 0, 0)");
     }
     ctx.fillStyle = innerGradient;
-    ctx.rect(0, 0, innerWidth, innerHeight);
+    ctx.rect(0, 0, innerWidth, innerHeight + heightOffset);
     ctx.fill();
 
     // Step 2: Draw inner card shadow and border
@@ -190,7 +196,7 @@ const ResultCard = ({ result }) => {
         halfBorder,
         halfBorder,
         innerWidth - borderWidth,
-        innerHeight - borderWidth
+        innerHeight + heightOffset - borderWidth
       );
       ctx.stroke();
     }
@@ -202,7 +208,7 @@ const ResultCard = ({ result }) => {
     const innerPadding = 24; // Matches p-6 (1.5rem = 24px)
     const imgSize = result.image ? 160 : 0;
     const imgMargin = result.image ? 16 : 0;
-    const nameHeight = 30;
+    const nameHeight = 40;
     const nameMargin = 8;
     const statusHeight = 24;
     const statusMargin = 12;
@@ -212,13 +218,13 @@ const ResultCard = ({ result }) => {
     const totalContentHeight =
       imgSize +
       imgMargin +
-      nameHeight +
+      nameHeight * maxLines +
       nameMargin +
       statusHeight +
       statusMargin +
       messageHeight;
 
-    const availableHeight = innerHeight - 2 * innerPadding;
+    const availableHeight = innerHeight + heightOffset - 2 * innerPadding;
     const startY = innerPadding + (availableHeight - totalContentHeight) / 2;
     let currentY = startY;
 
@@ -325,7 +331,7 @@ const ResultCard = ({ result }) => {
       if (lineCount < maxLines && nameLine.trim()) {
         ctx.fillText(nameLine.trim(), innerWidth / 2, currentY);
       }
-      currentY += nameHeight + nameMargin;
+      currentY += nameHeight * lineCount + nameMargin;
 
       // Draw status
       ctx.font = "700 20px system-ui, -apple-system, sans-serif";
@@ -334,7 +340,7 @@ const ResultCard = ({ result }) => {
       ctx.textBaseline = "top";
 
       const statusText = isSurvived
-        ? "You survived the sinking of the Titanic! 🎉"
+        ? "You survived the sinking of the Titanic!🎉"
         : "Rest In Peace 😔";
 
       const statusWords = statusText.split(" ");

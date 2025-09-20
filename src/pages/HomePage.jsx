@@ -142,6 +142,7 @@ const HomePage = () => {
       const { image, ...dataToSend } = { ...formData, ...formStep2Data };
       console.log("Data sent to backend:", dataToSend);
       const res = await fetch(
+        "http://127.0.0.1:8000/predict",
         "https://will-you-survive-backend.onrender.com/predict",
         {
           method: "POST",
@@ -266,72 +267,76 @@ const HomePage = () => {
         )}
 
         {/* Bubble 2 */}
-        {bubble2Visible && (
-          <motion.div
-            className="absolute  left-10 top-8 md:top-40 md:left-20 max-w-[360px] w-[75%]"
-            variants={bubbleVariants(0.4)}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="relative p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white md:text-xl font-bold">
-                OMG! <br />
-                🌊 An Iceberg Ahead!
-              </h2>
-              <TypingText
-                text="Brace yourself, the night is dark... ❄️"
-                onComplete={() => setBubble3Visible(true)}
-              />
-            </div>
-          </motion.div>
-        )}
-        {/* Right Bubble */}
-        {bubble3Visible && (
-          <motion.div
-            className="absolute right-11 w-[75%] top-40 md:top-40 md:right-20 max-w-[360px]"
-            variants={bubbleVariants(0.6)}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white text-base md:text-xl font-bold">
-                🧊 Are you brave enough to face the Titanic's fate?
-              </h2>
-              <TypingText
-                text="Don't let the penguins laugh at you!... 🌌"
-                onComplete={() => setBubble4Visible(true)}
-              />
-            </div>
-          </motion.div>
-        )}
-        {/* Bottom CTA Bubble */}
-        {bubble4Visible && (
-          <motion.div
-            className="absolute bottom-34 md:bottom-50 left-1/2 -translate-x-1/2 w-[75%] max-w-[360px]"
-            variants={bubbleVariants(0.8)}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white  md:text-xl font-bold">
-                🚤 Survive first, panic later!
-              </h2>
-              <TypingText text="The iceberg won't wait for anyone. 😏" />
-              <div className="md:mt-4 mt-2">
-                <button
-                  onClick={handleJumpIn}
-                  className="btn btn-primary w-28 md:w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full text-xs md:text-sm"
-                >
-                  Jump In! ⚓
-                </button>
+        {/* Dream Bubbles for Bubble 2, Bubble 3, and Bubble 4 */}
+        <div className="grid grid-cols-1 gap-4 sm:contents mt-8">
+          {/* Bubble 2 */}
+          {bubble2Visible && (
+            <motion.div
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:left-10 sm:top-16 sm:w-[75%] sm:max-w-[360px] md:top-40 md:left-20"
+              variants={bubbleVariants(0.4)}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="relative p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
+                <h2 className="text-white text-base md:text-xl font-bold">
+                  OMG! <br />
+                  🌊 An Iceberg Ahead!
+                </h2>
+                <TypingText
+                  text="Brace yourself, the night is dark... ❄️"
+                  onComplete={() => setBubble3Visible(true)}
+                />
               </div>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+          {/* Right Bubble (Bubble 3) */}
+          {bubble3Visible && (
+            <motion.div
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:right-12 sm:top-50 sm:w-[75%] sm:max-w-[360px] md:top-40 md:right-20"
+              variants={bubbleVariants(0.6)}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="relative p-6 bg-gradient-to-br from-cyan-400/20 to-indigo-700/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
+                <h2 className="text-white text-base md:text-xl font-bold">
+                  🧊 Are you brave enough to face the Titanic's fate?
+                </h2>
+                <TypingText
+                  text="Don't let the penguins laugh at you!... 🌌"
+                  onComplete={() => setBubble4Visible(true)}
+                />
+              </div>
+            </motion.div>
+          )}
+          {/* Bottom CTA Bubble (Bubble 4) */}
+          {bubble4Visible && (
+            <motion.div
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:bottom-56 sm:left-1/2 sm:-translate-x-1/2 sm:w-[75%] sm:max-w-[360px] md:bottom-50"
+              variants={bubbleVariants(0.8)}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="relative p-4 md:p-6 bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-md rounded-3xl shadow-lg text-center">
+                <h2 className="text-white text-base md:text-xl font-bold">
+                  🚤 Survive first, panic later!
+                </h2>
+                <TypingText text="The iceberg won't wait for anyone. 😏" />
+                <div className="mt-2 md:mt-4">
+                  <button
+                    onClick={handleJumpIn}
+                    className="btn btn-primary w-28 md:w-32 font-bold tracking-wide bg-gradient-to-r from-pink-500 via-fuchsia-600 to-purple-600 text-white border-0 shadow-xl hover:scale-105 transition-transform duration-300 rounded-full text-xs md:text-sm"
+                  >
+                    Jump In! ⚓
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </div>
 
         {/* Transition Loading Animation */}
         {isTransitioning && (
-          <div className="absolute top-50 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+          <div className="absolute md:top-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
             <Lottie
               animationData={LoadingAnimation1}
               loop={true}
