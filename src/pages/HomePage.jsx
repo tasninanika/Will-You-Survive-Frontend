@@ -212,7 +212,7 @@ const HomePage = () => {
       {/* Title */}
       <div className="relative z-10 flex justify-center pt-16">
         <motion.h1
-          className="flex items-center text-center text-4xl md:text-6xl font-black text-white drop-shadow-lg"
+          className="flex items-center text-center text-3xl md:text-4xl font-black text-white drop-shadow-lg"
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 12 }}
@@ -220,7 +220,7 @@ const HomePage = () => {
           <img
             src={Titanic}
             alt=""
-            className="w-12 h-12 md:w-16 md:h-16 mr-4"
+            className="w-10 h-10 md:w-12 md:h-12 mr-4"
           />
           Titanic Challenge
         </motion.h1>
@@ -246,7 +246,7 @@ const HomePage = () => {
                 <Lottie animationData={Robot} loop autoplay />
               </motion.div>
 
-              <h2 className="text-white text-3xl md:text-5xl font-bold mt-12">
+              <h2 className="text-white text-xl md:text-3xl font-bold mt-12">
                 Hello, Adventurer!
               </h2>
               <TypingText text="Ready for an Adventure? 🧭" />
@@ -268,11 +268,11 @@ const HomePage = () => {
 
         {/* Bubble 2 */}
         {/* Dream Bubbles for Bubble 2, Bubble 3, and Bubble 4 */}
-        <div className="grid grid-cols-1 gap-4 sm:contents mt-8">
+        <div className="grid grid-cols-1 gap-4 sm:contents mt-8 md:mt-0">
           {/* Bubble 2 */}
           {bubble2Visible && (
             <motion.div
-              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:left-10 sm:top-16 sm:w-[75%] sm:max-w-[360px] md:top-40 md:left-20"
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:left-10 sm:top-16 sm:w-[75%] sm:max-w-[360px] md:top-20 md:left-20"
               variants={bubbleVariants(0.4)}
               initial="hidden"
               animate="visible"
@@ -292,7 +292,7 @@ const HomePage = () => {
           {/* Right Bubble (Bubble 3) */}
           {bubble3Visible && (
             <motion.div
-              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:right-12 sm:top-50 sm:w-[75%] sm:max-w-[360px] md:top-40 md:right-20"
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:right-12 sm:top-50 sm:w-[75%] sm:max-w-[360px] md:top-20 md:right-20"
               variants={bubbleVariants(0.6)}
               initial="hidden"
               animate="visible"
@@ -311,7 +311,7 @@ const HomePage = () => {
           {/* Bottom CTA Bubble (Bubble 4) */}
           {bubble4Visible && (
             <motion.div
-              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:bottom-56 sm:left-1/2 sm:-translate-x-1/2 sm:w-[75%] sm:max-w-[360px] md:bottom-50"
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:bottom-56 sm:left-1/2 sm:-translate-x-1/2 sm:w-[75%] sm:max-w-[360px] md:bottom-80"
               variants={bubbleVariants(0.8)}
               initial="hidden"
               animate="visible"
