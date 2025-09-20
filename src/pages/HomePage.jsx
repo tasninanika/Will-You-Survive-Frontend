@@ -142,7 +142,7 @@ const HomePage = () => {
       const { image, ...dataToSend } = { ...formData, ...formStep2Data };
       console.log("Data sent to backend:", dataToSend);
       const res = await fetch(
-        "http://127.0.0.1:8000/predict",
+        // "http://127.0.0.1:8000/predict",
         "https://will-you-survive-backend.onrender.com/predict",
         {
           method: "POST",
