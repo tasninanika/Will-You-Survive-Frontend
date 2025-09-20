@@ -43,7 +43,7 @@ const FormStep1 = ({ onNext }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-5 p-4 md:p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20 w-[90%]">
+    <div className="max-w-md mx-auto mt-5 p-4 md:px-8 md:py-6 bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl text-center border border-white/20 w-[90%]">
       <h2 className="text-white text-lg md:text-2xl font-bold mb-2 md:mb-2 tracking-tight">
         Hey, why so hurry?{" "}
       </h2>
