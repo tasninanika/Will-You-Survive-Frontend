@@ -311,7 +311,7 @@ const HomePage = () => {
           {/* Bottom CTA Bubble (Bubble 4) */}
           {bubble4Visible && (
             <motion.div
-              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:bottom-56 sm:left-1/2 sm:-translate-x-1/2 sm:w-[75%] sm:max-w-[360px] md:bottom-80"
+              className="w-[75%] max-w-[360px] mx-auto sm:absolute sm:bottom-56 sm:left-1/2 sm:-translate-x-1/2 sm:w-[75%] sm:max-w-[360px] md:bottom-60"
               variants={bubbleVariants(0.8)}
               initial="hidden"
               animate="visible"
