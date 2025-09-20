@@ -415,7 +415,7 @@ const ResultCard = ({ result }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 md:mt-16 p-4 md:p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden w-[90%]">
+    <div className="max-w-md mx-auto mt-8 md:mt-16 p-4 md:p-5 bg-gradient-to-b from-black/50 to-indigo-900/30 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-500/30 text-center relative overflow-hidden w-[90%]">
       {/* Confetti effect for survivors */}
       {showConfetti && (
         <Confetti
@@ -482,28 +482,28 @@ const ResultCard = ({ result }) => {
         {isSurvived ? (
           <>
             <motion.p
-              className="text-green-400 text-4xl md:text-xl font-bold mb-2 md:mb-3"
+              className="text-green-400 md:text-xl font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               You survived the sinking of the Titanic!🎉
             </motion.p>
-            <p className="text-white/90 text-base md:text-lg font-medium">
+            <p className="text-white text-sm md:text-lg font-medium">
               {randomMessage}
             </p>
           </>
         ) : (
           <>
             <motion.h3
-              className="text-red-500 text-base md:text-lg font-bold mb-2 md:mb-3"
+              className="text-red-500 md:text-xl font-bold mb-2 md:mb-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               Rest In Peace 😔
             </motion.h3>
-            <p className="text-white/90 text-sm md:text-md font-medium">
+            <p className="text-white text-sm md:text-lg font-medium">
               {randomMessage}
             </p>
           </>
@@ -513,13 +513,13 @@ const ResultCard = ({ result }) => {
         <div className="mt-4 flex justify-center gap-2 md:gap-3">
           <button
             onClick={handleShare}
-            className="btn border-none px-6 md:px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
+            className="btn border-none px-6 md:px-8 py-1.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-xs md:text-base"
           >
             Share
           </button>
           <button
             onClick={handleDownload}
-            className="btn border-none px-3 md:px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-sm md:text-base"
+            className="btn border-none px-3 md:px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-200 text-xs md:text-base"
           >
             Download
           </button>

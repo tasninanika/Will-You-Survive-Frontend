@@ -47,7 +47,7 @@ const FormStep1 = ({ onNext }) => {
       <h2 className="text-white text-2xl md:text-3xl font-bold mb-2 md:mb-2 tracking-tight">
         Hey, why so hurry?{" "}
       </h2>
-      <p className="text-white/90 text-xs mb-4 md:mb-4">
+      <p className="text-white text-xs md:text-sm mb-4 md:mb-4">
         Say who you are first, so history remembers you!
       </p>
       <div className="space-y-4 md:space-y-6">

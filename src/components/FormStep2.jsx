@@ -64,10 +64,10 @@ const FormStep2 = ({ onNext }) => {
 
   return (
     <div className="max-w-4xl mx-auto mt-6 md:mt-24 p-4 md:p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg w-[90%]">
-      <h2 className="text-white text-2xl md:text-3xl font-bold mb-1 md:mb-3 text-center">
-        Hold on{" "}
+      <h2 className="text-white text-2xl md:text-3xl font-bold md:mb-3 text-center">
+        Hold on Buddy{" "}
       </h2>
-      <p className="text-white/90 text-xs mb-2 md:mb-4 text-center">
+      <p className="text-white md:text-base text-xs mb-2 md:mb-4 text-center">
         You’ll be able to jump soon!
       </p>
       {/* Progress Bar */}
@@ -83,14 +83,14 @@ const FormStep2 = ({ onNext }) => {
           <>
             {/* Class */}
             <div>
-              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base font-crimson">
                 Class
               </label>
               <select
                 name="pclass"
                 value={form.pclass}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base text-black"
+                className="w-full p-2 rounded-lg border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base text-black font-crimson"
               >
                 <option value="">Select Class</option>
                 <option value={1}>1st Class</option>
@@ -101,14 +101,14 @@ const FormStep2 = ({ onNext }) => {
 
             {/* Sex */}
             <div>
-              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base font-crimson">
                 Sex
               </label>
               <select
                 name="sex"
                 value={form.sex}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base font-crimson"
               >
                 <option value="">Select Sex</option>
                 <option value={0}>Male</option>
@@ -118,7 +118,7 @@ const FormStep2 = ({ onNext }) => {
 
             {/* Age */}
             <div>
-              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base font-crimson">
                 Age
               </label>
               <input
@@ -127,13 +127,13 @@ const FormStep2 = ({ onNext }) => {
                 placeholder="Enter Age"
                 value={form.age}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base font-crimson"
               />
             </div>
 
             {/* Siblings/Spouses */}
             <div>
-              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base font-crimson">
                 Siblings/Spouses aboard
               </label>
               <input
@@ -142,7 +142,7 @@ const FormStep2 = ({ onNext }) => {
                 placeholder="Enter number"
                 value={form.sibsp}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base font-crimson"
               />
             </div>
           </>
@@ -152,7 +152,7 @@ const FormStep2 = ({ onNext }) => {
           <>
             {/* Parents/Children */}
             <div>
-              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base font-crimson">
                 Parents/Children aboard
               </label>
               <input
@@ -161,7 +161,7 @@ const FormStep2 = ({ onNext }) => {
                 placeholder="Enter number"
                 value={form.parch}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base font-crimson"
               />
             </div>
 
@@ -182,14 +182,14 @@ const FormStep2 = ({ onNext }) => {
 
             {/* Embarked */}
             <div>
-              <label className="text-white font-semibold block mb-1 text-sm md:text-base">
+              <label className="text-white font-semibold block mb-1 text-sm md:text-base font-crimson">
                 Port of Embarkation
               </label>
               <select
                 name="embarked"
                 value={form.embarked}
                 onChange={handleChange}
-                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base"
+                className="w-full p-2 rounded-lg text-black border border-purple-500/50 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/50 focus:outline-none text-sm md:text-base font-crimson"
               >
                 <option value="">Select Port</option>
                 <option value={0}>Cherbourg (C)</option>

@@ -73,7 +73,7 @@ const TypingText = ({ text, speed = 50, onComplete }) => {
   }, [text, speed, onComplete, finished]);
 
   return (
-    <p className="text-white/85 md:mt-4 text-xs mt-2 md:text-base font-mono">
+    <p className="text-white/85 md:mt-4 text-sm mt-2 md:text-lg font-mono">
       {displayed}
     </p>
   );
@@ -84,7 +84,7 @@ const HomePage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showFormStep2, setShowFormStep2] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false); // Add this state
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const [bubble1Visible, setBubble1Visible] = useState(false);
   const [bubble2Visible, setBubble2Visible] = useState(false);
@@ -202,7 +202,8 @@ const HomePage = () => {
       </audio>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-indigo-900/30 to-black/70 backdrop-blur-xs" />
+      <div className="absolute inset-0" />
+      {/* bg-gradient-to-b from-black/40 via-indigo-900/30 to-black/70 backdrop-blur-xs */}
 
       {/* Title */}
       <div className="relative z-10 flex justify-center pt-16">
@@ -264,18 +265,18 @@ const HomePage = () => {
         {/* Bubble 2 */}
         {bubble2Visible && (
           <motion.div
-            className="absolute  left-10 top-10 md:top-40 md:left-20 max-w-[360px] w-[75%]"
+            className="absolute  left-10 top-8 md:top-40 md:left-20 max-w-[360px] w-[75%]"
             variants={bubbleVariants(0.4)}
             initial="hidden"
             animate="visible"
           >
             <div className="relative p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 backdrop-blur-md rounded-3xl shadow-lg text-center">
-              <h2 className="text-white md:text-lg font-bold">
+              <h2 className="text-white md:text-xl font-bold">
                 OMG! <br />
                 🌊 An Iceberg Ahead!
               </h2>
               <TypingText
-                text="Brace yourself captain, the night is dark... ❄️"
+                text="Brace yourself, the night is dark... ❄️"
                 onComplete={() => setBubble3Visible(true)}
               />
             </div>
@@ -284,7 +285,7 @@ const HomePage = () => {
         {/* Right Bubble */}
         {bubble3Visible && (
           <motion.div
-            className="absolute right-11 w-[75%] top-45 md:top-40 md:right-20 max-w-[360px]"
+            className="absolute right-11 w-[75%] top-40 md:top-40 md:right-20 max-w-[360px]"
             variants={bubbleVariants(0.6)}
             initial="hidden"
             animate="visible"
@@ -303,7 +304,7 @@ const HomePage = () => {
         {/* Bottom CTA Bubble */}
         {bubble4Visible && (
           <motion.div
-            className="absolute bottom-36 md:bottom-50 left-1/2 -translate-x-1/2 w-[75%] max-w-[360px]"
+            className="absolute bottom-34 md:bottom-50 left-1/2 -translate-x-1/2 w-[75%] max-w-[360px]"
             variants={bubbleVariants(0.8)}
             initial="hidden"
             animate="visible"
